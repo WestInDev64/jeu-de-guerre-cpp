@@ -1,11 +1,12 @@
 #ifndef CASE_HPP
 #define CASE_HPP
 
+#include "Pion.hpp"
 class Case
 {
 private:
     int m_etat;
-    //Pion *m_pion;
+    Pion *m_pion;
 
 public:
     int getEtat();
@@ -18,6 +19,7 @@ public:
 Case::Case()
 {
     m_etat = 0;
+    m_pion = nullptr;
 }
 
 int Case::getEtat()

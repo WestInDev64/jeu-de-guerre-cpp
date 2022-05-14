@@ -17,7 +17,7 @@ public:
     Jeu();
     void Init();
     void initPlateau();
-    Plateau * getPlateau();
+    Plateau *getPlateau();
 };
 
 Jeu::Jeu()
@@ -26,7 +26,7 @@ Jeu::Jeu()
 
 void Jeu::Init()
 {
-    char c1 = '-', c2 ='-';
+    char c1 = '-', c2 = '-';
     string name1 = "";
     string name2 = "";
 
@@ -46,7 +46,8 @@ void Jeu::Init()
         cout << "Veuillez sélectionner une couleur : Rouge / Bleu (r/b) ?";
         cin >> c1;
         cout << c1 << endl;
-        if (c1 != 'r' && c1 != 'b') cout << "Erreur lors du choix de la couleur !" << endl;
+        if (c1 != 'r' && c1 != 'b')
+            cout << "Erreur lors du choix de la couleur !" << endl;
     } while (c1 != 'r' && c1 != 'b');
 
     /* Init Joueur 2 */
@@ -57,27 +58,26 @@ void Jeu::Init()
         if (name2 == "")
             cout << "Erreur, veuillez entrer un nom valide." << endl;
     } while (name2 == "");
-    
+
     c1 == 'r' ? c2 = 'b' : c2 = 'r';
-    
+
     /* Affichage couleur du 2eme joueur */
     c2 == 'r' ? cout << name2 << " sera donc le joueur Rouge" << endl : cout << name2 << " sera donc le joueur Bleu" << endl;
 
-
     /* Fin de fonction  */
     /* Allocations Joueurs */
-    m_j1 = new Joueur(name1,c1);
-    m_j2 = new Joueur(name2,c2);
-    
+    m_j1 = new Joueur(name1, c1);
+    m_j2 = new Joueur(name2, c2);
 }
 
-void Jeu::initPlateau(){
+void Jeu::initPlateau()
+{
     m_grille = new Plateau();
 }
 
-Plateau *  Jeu::getPlateau()
+Plateau *Jeu::getPlateau()
 {
     return m_grille;
 }
 
-#endif //JEU_HPP
+#endif // JEU_HPP

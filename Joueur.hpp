@@ -18,6 +18,7 @@ class Joueur
 public:
     Joueur();
     Joueur(string const& name, char const& color);
+    void init();
     
     //~Joueur();
     //void afficherPions();
@@ -43,6 +44,10 @@ Joueur::Joueur(string const &name, char const &color)
 int Joueur::nbOr()
 {
     return m_qteOr;
+}
+
+void Joueur::init(){
+    
 }
 
 
