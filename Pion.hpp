@@ -13,6 +13,14 @@ public:
     }
     // virtual std::string affichePion() = 0;
     const char *getRef() const;
+    int getPdv()
+    {
+        return m_pdv;
+    }
+    void setPdv(int pdv)
+    {
+        m_pdv = pdv;
+    }
 
 protected:
     /*Référence Joueur appartenant au pion  */
@@ -24,6 +32,10 @@ protected:
     int m_pdm;
     int m_cout;
     int m_prod;
+
+    /* positions */
+    int m_posx;
+    int m_posy;
 
     /* Référence nom du pion */
     char m_ref[2];
@@ -49,8 +61,12 @@ public:
         m_joueur = j;
     }
     std::string affichePion();
+    // std::string affichePion();
+    void attaque(Pion *p)
+    {
+        p->setPdv(p->getPdv() - this->m_pow);
+    }
 };
-
 
 class Seigneur : public Pion
 {
@@ -66,31 +82,12 @@ public:
         m_ref[1] = j->getCouleur();
         m_joueur = j;
     }
-    std::string affichePion();
-};
-
-class Chateau : public Pion
-{
-public:
-    Chateau(Joueur *j) : Pion(j)
+    void attaque(Pion *p)
     {
-        m_pow = 0;
-        m_pdv = 20;
-        m_pdm = 0;
-        m_prod = 2;
-        m_cout = 15;
-        m_ref[0] = 'C';
-        m_ref[1] = j->getCouleur();
-        m_joueur = j;
+        p->setPdv(p->getPdv() - this->m_pow);
     }
-    //~Chateau();
-    std::string affichePion();
-    /*   void ProduireOr();
-      void RecruterSeigneur();
-      void RecruterGuerrier();
-      void RecruterPaysan();
-      bool PeutRecruter();
-      bool CaseDisponible(); // A voir si elle reste */
+    // void transformeEnChateau();
+    // std::string affichePion();
 };
 
 class Paysan : public Pion
@@ -107,7 +104,65 @@ public:
         m_ref[1] = j->getCouleur();
         m_joueur = j;
     }
-    std::string affichePion();
+    void produireOr(Joueur *j);
 };
+
+void Paysan::produireOr(Joueur *j)
+{
+    j->setOr(Paysan::m_prod);
+}
+
+class Chateau : public Pion
+{
+
+private:
+    bool m_action = false;
+
+public:
+    Chateau(Joueur *j) : Pion(j)
+    {
+        m_pow = 0;
+        m_pdv = 20;
+        m_pdm = 0;
+        m_prod = 2;
+        m_cout = 15;
+        m_ref[0] = 'C';
+        m_ref[1] = j->getCouleur();
+        m_joueur = j;
+    }
+    //~Chateau();
+    // std::string affichePion();
+    void produireOr(Joueur *j)
+    {
+        j->setOr(Chateau::m_prod);
+    }
+    bool getAction()
+    {
+        return m_action;
+    }
+
+    Pion *construirePion(char c)
+    {
+        Pion *p;
+        switch (c)
+        {
+        case 'P':
+            p = new Paysan(this->m_joueur);
+            break;
+
+        case 'S':
+            p = new Seigneur(this->m_joueur);
+            break;
+
+        case 'G':
+            p = new Guerrier(this->m_joueur);
+            break;
+        }
+        m_action = true;
+        return p;
+    }
+};
+
+
 
 #endif // PION_HPP

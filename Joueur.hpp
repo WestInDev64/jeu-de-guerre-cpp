@@ -4,7 +4,6 @@
 #include <iostream>
 #include <string>
 
-
 using namespace std;
 
 class Joueur
@@ -12,7 +11,7 @@ class Joueur
     string m_name;
     int m_qteOr;
     bool m_tour;
-    char m_couleur; 
+    char m_couleur;
     int m_nbChateau;
 
 public:
@@ -28,7 +27,6 @@ public:
     /* Mutateurs */
     void setOr(int o);
 };
-
 
 Joueur::Joueur()
 {
@@ -81,6 +79,5 @@ void Joueur::setOr(int o)
 
     m_qteOr += o;
 }
-
 
 #endif // JOUEUR_HPP
