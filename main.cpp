@@ -7,10 +7,11 @@ int main()
     Jeu game;
     game.Init();
     game.initPlateau();
-    Joueur * j = new Joueur("test", 'R'); 
-    Pion * p = new Guerrier(j);
-    game.setCase(p,0,0);
+    //Joueur * j = new Joueur("test", 'R'); 
+    //Pion * p = new Guerrier(j);
+    //game.setCase(p,0,0);
     game.getPlateau()->affiche();
+    game.Start();
     
 
     return 0;

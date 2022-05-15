@@ -18,8 +18,15 @@ class Joueur
 public:
     Joueur();
     Joueur(string const& name, char const& color);
+
+    /* Accesseurs */
     char getCouleur() const;
-    int nbOr();
+    string getNom() const;
+    int getOr() const;
+    int getNbChateau() const;
+
+    /* Mutateurs */
+    void setOr(int o);
 };
 
 
@@ -37,15 +44,42 @@ Joueur::Joueur(string const &name, char const &color)
     m_couleur = color;
 }
 
-int Joueur::nbOr()
+
+/********************************************************
+ *                      Accesseurs                      *
+ ********************************************************/  
+
+char Joueur::getCouleur() const 
+{
+    return m_couleur;
+}
+
+string Joueur::getNom() const
+{
+    return m_name;
+}
+
+
+int Joueur::getOr() const
 {
     return m_qteOr;
 }
 
 
-char Joueur::getCouleur() const 
+int Joueur::getNbChateau() const
 {
-    return m_couleur;
+    return m_nbChateau;
+}
+
+
+/********************************************************
+ *                      Mutateurs                       *
+ ********************************************************/
+
+void Joueur::setOr(int o)
+{
+
+    m_qteOr += o;
 }
 
 

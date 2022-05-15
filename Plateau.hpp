@@ -9,32 +9,8 @@ using namespace std;
 
 enum Alphabet
 {
-    A,
-    B,
-    C,
-    D,
-    E,
-    F,
-    G,
-    H,
-    I,
-    J,
-    K,
-    L,
-    M,
-    N,
-    O,
-    P,
-    Q,
-    R,
-    S,
-    T,
-    U,
-    V,
-    W,
-    X,
-    Y,
-    Z,
+    A,B,C,D,E,F,G,H,I,J,K,L,M,
+    N,O,P,Q,R,S,T,U,V,W,X,Y,Z,
 };
 
 class Plateau
@@ -43,7 +19,6 @@ private:
     // std::array<Case,20*20> m_plateau;
     /**
      * * Tableau de tableau de cases
-     * TODO: Faire une enum pour l'affichage
      * TODO: faire une méthode deplacerPion() avec move d'une case à une autre
      */
     int m_lig;
@@ -62,7 +37,7 @@ Case ***Plateau::getTabCase() const
     return tabCase;
 }
 
-/* Constructeur */
+/* Constructeur de plateau */
 Plateau::Plateau(int nbx, int nby)
 {
     m_lig = nbx;
@@ -79,11 +54,11 @@ Plateau::Plateau(int nbx, int nby)
     }
 }
 
+/**
+ * * Affichage du Plateau paramétrer sur 10*10
+ */
 void Plateau::affiche()
 {
-    /**
-     * TODO: Revoir l'affichage en utilisant enum (A,B,C ... chess)
-     */
     cout << endl;
     size_t fieldWidth = 3; // length of longest text
     cout << "       0   1   2   3   4   5   6   7   8   9  " << endl;
@@ -106,6 +81,9 @@ void Plateau::affiche()
     cout << endl;
 }
 
+/**
+ * Méthode qui retourne un char en fonction de notre enum
+ */ 
 char Plateau::enumToChar(int abc)
 {
     switch (abc)
