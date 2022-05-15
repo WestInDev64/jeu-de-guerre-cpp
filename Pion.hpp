@@ -21,6 +21,9 @@ public:
     {
         m_pdv = pdv;
     }
+    virtual string affichetype(){
+        return "Pion";
+    };
 
 protected:
     /*Référence Joueur appartenant au pion  */
@@ -60,11 +63,13 @@ public:
         m_ref[1] = j->getCouleur();
         m_joueur = j;
     }
-    std::string affichePion();
-    // std::string affichePion();
     void attaque(Pion *p)
     {
         p->setPdv(p->getPdv() - this->m_pow);
+    }
+
+    string affichetype(){
+        return "Guerrier";
     }
 };
 
@@ -86,8 +91,11 @@ public:
     {
         p->setPdv(p->getPdv() - this->m_pow);
     }
-    // void transformeEnChateau();
-    // std::string affichePion();
+
+    string affichetype(){
+        return "Seigneur";
+    }
+
 };
 
 class Paysan : public Pion
@@ -105,6 +113,11 @@ public:
         m_joueur = j;
     }
     void produireOr(Joueur *j);
+
+    string affichetype(){
+        return "Paysan";
+    }
+
 };
 
 void Paysan::produireOr(Joueur *j)
@@ -119,6 +132,7 @@ private:
     bool m_action = false;
 
 public:
+    /* Méthodes */
     Chateau(Joueur *j) : Pion(j)
     {
         m_pow = 0;
@@ -130,8 +144,7 @@ public:
         m_ref[1] = j->getCouleur();
         m_joueur = j;
     }
-    //~Chateau();
-    // std::string affichePion();
+
     void produireOr(Joueur *j)
     {
         j->setOr(Chateau::m_prod);
@@ -160,6 +173,10 @@ public:
         }
         m_action = true;
         return p;
+    }
+
+    string affichetype(){
+        return "Chateau";
     }
 };
 

@@ -14,6 +14,7 @@ class Joueur
     char m_couleur;
     int m_nbChateau;
 
+
 public:
     Joueur();
     Joueur(string const& name, char const& color);
@@ -26,6 +27,7 @@ public:
 
     /* Mutateurs */
     void setOr(int o);
+    void setNbChateau();
 };
 
 Joueur::Joueur()
@@ -78,6 +80,11 @@ void Joueur::setOr(int o)
 {
 
     m_qteOr += o;
+}
+
+void Joueur::setNbChateau()
+{
+    m_nbChateau += 1;
 }
 
 #endif // JOUEUR_HPP
