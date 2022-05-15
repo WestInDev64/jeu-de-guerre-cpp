@@ -4,7 +4,6 @@
 #include <iostream>
 #include <string>
 
-
 using namespace std;
 
 class Joueur
@@ -12,16 +11,14 @@ class Joueur
     string m_name;
     int m_qteOr;
     bool m_tour;
-    char m_couleur; 
+    char m_couleur;
     int m_nbChateau;
 
 public:
     Joueur();
-    Joueur(string const& name, char const& color);
+    Joueur(string const &name, char const &color);
     char getCouleur() const;
-    int nbOr();
 };
-
 
 Joueur::Joueur()
 {
@@ -37,16 +34,9 @@ Joueur::Joueur(string const &name, char const &color)
     m_couleur = color;
 }
 
-int Joueur::nbOr()
-{
-    return m_qteOr;
-}
-
-
-char Joueur::getCouleur() const 
+char Joueur::getCouleur() const
 {
     return m_couleur;
 }
-
 
 #endif // JOUEUR_HPP
