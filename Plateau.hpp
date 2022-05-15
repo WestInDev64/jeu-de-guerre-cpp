@@ -3,8 +3,39 @@
 
 #include "Case.hpp"
 #include <cstring>
+#include <iomanip>
 
 using namespace std;
+
+enum Alphabet
+{
+    A,
+    B,
+    C,
+    D,
+    E,
+    F,
+    G,
+    H,
+    I,
+    J,
+    K,
+    L,
+    M,
+    N,
+    O,
+    P,
+    Q,
+    R,
+    S,
+    T,
+    U,
+    V,
+    W,
+    X,
+    Y,
+    Z,
+};
 
 class Plateau
 {
@@ -23,9 +54,10 @@ public:
     Plateau(int nbx, int nby);
     void affiche();
     Case ***getTabCase() const;
+    char enumToChar(int abc);
 };
 
-Case *** Plateau::getTabCase() const
+Case ***Plateau::getTabCase() const
 {
     return tabCase;
 }
@@ -53,19 +85,86 @@ void Plateau::affiche()
      * TODO: Revoir l'affichage en utilisant enum (A,B,C ... chess)
      */
     cout << endl;
-    cout << "= = = = = = = = = = = = = = = = = = = = = = = = = = = = = = " << endl;
+    size_t fieldWidth = 3; // length of longest text
+    cout << "       0   1   2   3   4   5   6   7   8   9  " << endl;
     for (int i = 0; i < m_lig; i++)
     {
+        cout << "     +---+---+---+---+---+---+---+---+---+---+" << endl;
+        cout << setw(fieldWidth) << internal << enumToChar(i) << "  |";
+        // cout << "  +---+---+---+---+---+---+---+---+---+---+" << endl;
         for (int j = 0; j < m_col; j++)
         {
             if (strlen(tabCase[i][j]->getPion()->getRef()) == 2)
-                cout << tabCase[i][j]->getPion()->getRef() << ", ";
+                cout << "" << tabCase[i][j]->getPion()->getRef() << " |";
             else
-                cout << "   , ";
+                cout << " "
+                     << "  |";
         }
         cout << endl;
     }
+    cout << "     +---+---+---+---+---+---+---+---+---+---+" << endl;
     cout << endl;
+}
+
+char Plateau::enumToChar(int abc)
+{
+    switch (abc)
+    {
+    case A:
+        return 'A';
+    case B:
+        return 'B';
+    case C:
+        return 'C';
+    case D:
+        return 'D';
+    case E:
+        return 'E';
+    case F:
+        return 'F';
+    case G:
+        return 'G';
+    case H:
+        return 'H';
+    case I:
+        return 'I';
+    case J:
+        return 'J';
+    case K:
+        return 'K';
+    case L:
+        return 'L';
+    case M:
+        return 'M';
+    case N:
+        return 'N';
+    case O:
+        return 'O';
+    case P:
+        return 'P';
+    case Q:
+        return 'Q';
+    case R:
+        return 'R';
+    case S:
+        return 'S';
+    case T:
+        return 'T';
+    case U:
+        return 'U';
+    case V:
+        return 'V';
+    case W:
+        return 'W';
+    case X:
+        return 'X';
+    case Y:
+        return 'Y';
+    case Z:
+        return 'Z';
+    default:
+        return '.';
+    }
 }
 
 #endif // PLATEAU_HPP

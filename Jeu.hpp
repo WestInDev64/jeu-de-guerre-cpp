@@ -73,18 +73,18 @@ void Jeu::Init()
 
 void Jeu::initPlateau()
 {
-    m_plateau = new Plateau(20,20);
+    m_plateau = new Plateau(10,10);
     
     Pion * chatj1 = new Chateau(m_j1);
     Pion * payj1 = new Paysan(m_j1);
-    setCase(chatj1,1,4);
-    setCase(payj1,1,5);
+    setCase(chatj1,1,1);
+    setCase(payj1,1,2);
 
     
     Pion * chatj2 = new Chateau(m_j2);
     Pion * payj2 = new Paysan(m_j2);
-    setCase(chatj2,19,16);
-    setCase(payj2,19,15);
+    setCase(chatj2,8,8);
+    setCase(payj2,8,7);
  }
 
 Plateau *Jeu::getPlateau()
