@@ -5,12 +5,17 @@
 class Case
 {
 private:
-    int m_etat;
+    /**
+     * 
+     * 
+     * TODO: getPosition() retourne un (x,y) du plateau
+     */ 
     Pion *m_pion;
 
 public:
-    int getEtat();
     Case();
+    Pion* getPion();
+    void setPion( Pion * p);
     //Case(Pion *p);
     //void setCase(/* int etat, */ Pion *P);
     //Pion* getCase();
@@ -18,13 +23,15 @@ public:
 
 Case::Case()
 {
-    m_etat = 0;
-    m_pion = nullptr;
+    m_pion = new Pion();
 }
 
-int Case::getEtat()
-{
-    return m_etat;
+Pion* Case::getPion(){
+    return m_pion;
+}
+
+void Case::setPion(Pion * p){
+    m_pion = p;
 }
 
 #endif //CASE_HPP

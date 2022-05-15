@@ -9,7 +9,7 @@ using namespace std;
 class Jeu
 {
 protected:
-    Plateau *m_grille;
+    Plateau *m_plateau;
     Joueur *m_j1;
     Joueur *m_j2;
 
@@ -18,6 +18,7 @@ public:
     void Init();
     void initPlateau();
     Plateau *getPlateau();
+    void setCase( Pion * p, int x, int y);
 };
 
 Jeu::Jeu()
@@ -46,9 +47,9 @@ void Jeu::Init()
         cout << "Veuillez sélectionner une couleur : Rouge / Bleu (r/b) ?";
         cin >> c1;
         cout << c1 << endl;
-        if (c1 != 'r' && c1 != 'b')
+        if (c1 != 'R' && c1 != 'B')
             cout << "Erreur lors du choix de la couleur !" << endl;
-    } while (c1 != 'r' && c1 != 'b');
+    } while (c1 != 'R' && c1 != 'B');
 
     /* Init Joueur 2 */
     do
@@ -59,10 +60,10 @@ void Jeu::Init()
             cout << "Erreur, veuillez entrer un nom valide." << endl;
     } while (name2 == "");
 
-    c1 == 'r' ? c2 = 'b' : c2 = 'r';
+    c1 == 'R' ? c2 = 'B' : c2 = 'R';
 
     /* Affichage couleur du 2eme joueur */
-    c2 == 'r' ? cout << name2 << " sera donc le joueur Rouge" << endl : cout << name2 << " sera donc le joueur Bleu" << endl;
+    c2 == 'R' ? cout << name2 << " sera donc le joueur Rouge" << endl : cout << name2 << " sera donc le joueur Bleu" << endl;
 
     /* Fin de fonction  */
     /* Allocations Joueurs */
@@ -72,12 +73,30 @@ void Jeu::Init()
 
 void Jeu::initPlateau()
 {
-    m_grille = new Plateau();
-}
+    m_plateau = new Plateau(20,20);
+    
+    Pion * chatj1 = new Chateau(m_j1);
+    Pion * payj1 = new Paysan(m_j1);
+    setCase(chatj1,1,4);
+    setCase(payj1,1,5);
+
+    
+    Pion * chatj2 = new Chateau(m_j2);
+    Pion * payj2 = new Paysan(m_j2);
+    setCase(chatj2,19,16);
+    setCase(payj2,19,15);
+ }
 
 Plateau *Jeu::getPlateau()
 {
-    return m_grille;
+    return m_plateau;
 }
+
+
+void Jeu::setCase(Pion *p, int x, int y)
+{
+    m_plateau->getTabCase()[x][y]->setPion(p);
+}
+
 
 #endif // JEU_HPP

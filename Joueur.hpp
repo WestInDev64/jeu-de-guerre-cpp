@@ -3,7 +3,7 @@
 
 #include <iostream>
 #include <string>
-#include "Plateau.hpp"
+
 
 using namespace std;
 
@@ -12,18 +12,14 @@ class Joueur
     string m_name;
     int m_qteOr;
     bool m_tour;
-    char m_color; 
+    char m_couleur; 
     int m_nbChateau;
 
 public:
     Joueur();
     Joueur(string const& name, char const& color);
-    void init();
-    
-    //~Joueur();
-    //void afficherPions();
+    char getCouleur() const;
     int nbOr();
-    //void creerChateau(Plateau plateau, int x, int y);
 };
 
 
@@ -38,7 +34,7 @@ Joueur::Joueur(string const &name, char const &color)
     m_name = name;
     m_qteOr = 20;
     m_tour = false;
-    m_color = color;
+    m_couleur = color;
 }
 
 int Joueur::nbOr()
@@ -46,8 +42,10 @@ int Joueur::nbOr()
     return m_qteOr;
 }
 
-void Joueur::init(){
-    
+
+char Joueur::getCouleur() const 
+{
+    return m_couleur;
 }
 
 
