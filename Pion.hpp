@@ -13,13 +13,35 @@ public:
     }
     // virtual std::string affichePion() = 0;
     const char *getRef() const;
+    
     int getPdv()
     {
         return m_pdv;
     }
+
     void setPdv(int pdv)
     {
         m_pdv = pdv;
+    }
+
+    bool getAction()
+    {
+        return m_action;
+    }
+
+    int getPdm()
+    {
+        return m_pdm;
+    }
+
+    void setPdm(int m)
+    {
+        m_pdm = m;
+    }
+
+    void reinitAction()
+    {
+        m_action = false;
     }
 
 protected:
@@ -32,6 +54,9 @@ protected:
     int m_pdm;
     int m_cout;
     int m_prod;
+
+    /* 1 action par Pion (sauf pour le Guerrier qui peut se déplacer puis attaquer) */
+    bool m_action = false;
 
     /* positions */
     int m_posx;
@@ -48,6 +73,9 @@ const char *Pion::getRef() const
 
 class Guerrier : public Pion
 {
+private:
+    bool seDeplace = false;
+
 public:
     Guerrier(Joueur *j) : Pion(j)
     {
@@ -60,8 +88,7 @@ public:
         m_ref[1] = j->getCouleur();
         m_joueur = j;
     }
-    std::string affichePion();
-    // std::string affichePion();
+
     void attaque(Pion *p)
     {
         p->setPdv(p->getPdv() - this->m_pow);
@@ -82,12 +109,11 @@ public:
         m_ref[1] = j->getCouleur();
         m_joueur = j;
     }
+
     void attaque(Pion *p)
     {
         p->setPdv(p->getPdv() - this->m_pow);
     }
-    // void transformeEnChateau();
-    // std::string affichePion();
 };
 
 class Paysan : public Pion
@@ -116,8 +142,6 @@ class Chateau : public Pion
 {
 
 private:
-    bool m_action = false;
-
 public:
     Chateau(Joueur *j) : Pion(j)
     {
@@ -130,15 +154,10 @@ public:
         m_ref[1] = j->getCouleur();
         m_joueur = j;
     }
-    //~Chateau();
-    // std::string affichePion();
+
     void produireOr(Joueur *j)
     {
         j->setOr(Chateau::m_prod);
-    }
-    bool getAction()
-    {
-        return m_action;
     }
 
     Pion *construirePion(char c)
@@ -162,7 +181,5 @@ public:
         return p;
     }
 };
-
-
 
 #endif // PION_HPP
