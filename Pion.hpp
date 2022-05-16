@@ -3,6 +3,9 @@
 
 #include <string>
 #include "Joueur.hpp"
+
+using namespace std;
+
 class Pion
 {
 public:
@@ -12,7 +15,9 @@ public:
         m_joueur = j;
     }
     // virtual std::string affichePion() = 0;
-    const char *getRef() const;
+    const char * getRef() const{
+        return m_ref;
+    }
 
     int getPdv()
     {
@@ -26,7 +31,7 @@ public:
     virtual string affichetype()
     {
         return "Pion";
-    };
+    }
 
     /**
      * Peut servir dans le cas ou un chateau recrute un Pion,
@@ -82,11 +87,6 @@ protected:
     /* Référence nom du pion */
     char m_ref[2];
 };
-
-const char *Pion::getRef() const
-{
-    return m_ref;
-}
 
 class Guerrier : public Pion
 {
@@ -194,7 +194,10 @@ public:
         m_ref[1] = j->getCouleur();
         m_joueur = j;
     }
-    void produireOr(Joueur *j);
+    void produireOrS(Joueur *j)
+    {
+        j->setOr(m_prod);
+    }
 
     bool getSeDeplace()
     {
@@ -213,10 +216,6 @@ public:
 };
 
 /* Action du Paysan pour produire de l'or au Joueur */
-void Paysan::produireOr(Joueur *j)
-{
-    j->setOr(Paysan::m_prod);
-}
 
 class Chateau : public Pion
 {
@@ -241,7 +240,7 @@ public:
     {
         if (j->getOr() < 10)
         {
-            false;
+            return false;
         }
         return true;
     }
@@ -270,7 +269,7 @@ public:
      */
     void produireOr(Joueur *j)
     {
-        j->setOr(Chateau::m_prod);
+        j->setOr(m_prod);
     }
 
     /**

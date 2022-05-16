@@ -1,7 +1,6 @@
 #ifndef JOUEUR_HPP
 #define JOUEUR_HPP
 
-#include <iostream>
 #include <string>
 
 using namespace std;
@@ -13,7 +12,6 @@ class Joueur
     bool m_tour;
     char m_couleur;
     int m_nbChateau;
-
 
 public:
     Joueur();
@@ -30,61 +28,5 @@ public:
     void setNbChateau();
 };
 
-Joueur::Joueur()
-{
-    m_qteOr = 20;
-    m_tour = false;
-}
 
-Joueur::Joueur(string const &name, char const &color)
-{
-    m_name = name;
-    m_qteOr = 20;
-    m_tour = false;
-    m_couleur = color;
-}
-
-
-/********************************************************
- *                      Accesseurs                      *
- ********************************************************/  
-
-char Joueur::getCouleur() const 
-{
-    return m_couleur;
-}
-
-string Joueur::getNom() const
-{
-    return m_name;
-}
-
-
-int Joueur::getOr() const
-{
-    return m_qteOr;
-}
-
-
-int Joueur::getNbChateau() const
-{
-    return m_nbChateau;
-}
-
-
-/********************************************************
- *                      Mutateurs                       *
- ********************************************************/
-
-void Joueur::setOr(int o)
-{
-
-    m_qteOr += o;
-}
-
-void Joueur::setNbChateau()
-{
-    m_nbChateau += 1;
-}
-
-#endif // JOUEUR_HPP
+#endif // JOUEUR_HPPPP
