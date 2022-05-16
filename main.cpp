@@ -10,7 +10,7 @@ int main()
     //Joueur * j = new Joueur("test", 'R'); 
     //Pion * p = new Guerrier(j);
     //game.setCase(p,0,0);
-    game.getPlateau()->affiche();
+    //game.getPlateau()->affiche();
     game.Start();
     
 

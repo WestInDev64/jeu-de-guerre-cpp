@@ -8,6 +8,13 @@
 
 using namespace std;
 
+int choixMenu()
+{
+    int choix;
+    cin >> choix;
+    return choix;
+}
+
 class Jeu
 {
 protected:
@@ -15,9 +22,11 @@ protected:
     Joueur *m_j1;
     Joueur *m_j2;
 
-    bool m_tourJ1;
+    int m_tourJ1;
     int etatTourPhase1;
     int etatTourPhase2;
+    bool gameOver; // false durant toute la partie pour afficher un message
+    bool victoire; // pareil oui
 
     vector<Case *> vecCasesJoueur1;
     vector<Case *> vecCasesJoueur2;
@@ -28,15 +37,49 @@ public:
     void Init();
     void Start();
     void initPlateau();
+
+    /* Affichage & Menus */
     void InterfaceJoueur();
-    int Commandes(Joueur *j);
-    void afficheMenuSelection();
+    void afficheMenuTour();
+    void afficheSelectionPion(vector<Case *> vecCases);
+    void selectionMenu(vector<Case *> vecCases);
+    void choixPion(vector<Case *> vecCases);
+
+    /**
+     * TODO: Méthode estGameOver()
+     * nbChateau = 0
+     * TODO: Méthode estVainqueur()
+     * détruire les chateaux adv
+     * ya pas d'autre conditions de victoires ?
+     * ok on peut en rajouter
+     * 20 TOURS == ok comptabilité
+     * TODO: Seigneur Transforme en chateau()
+     * il faut peut se tranformer dans Seigneur
+     * si assez d'or tout simplement == 1 action du seigneur
+     *
+     * de quoi ?
+     * comment çà ?
+     * S1 = C1 = S4 = C4 =  ,  S2 S3
+     *
+     * bah oui non 1 transformation = terminé
+     * et bool du Chateau  a false
+     * pareil pour Seigneur qui pop
+     *
+     * TODO: Calculs Fin de tour (Récoltes etc booléens)
+     * Passer son tour non car si il crée un chateau après
+     * il aura pas son or
+     * alors qu'a la fin il aura tout son or
+     * ah ok faut noter
+     * Récolte OR du chateau créer actif au prochain tour
+     * oui voila
+     *
+     */
 
     /* accesseurs */
     Plateau *getPlateau() const;
     Joueur *getJoueur1() const;
     Joueur *getJoueur2() const;
-    Case *selectionPion(int num) const;
+    Case *selectionPion(int num, vector<Case *> vecCases) const;
 
     /* mutateurs */
     void setCase(Pion *p, int x, int y);
@@ -93,7 +136,7 @@ void Jeu::Init()
     m_j2 = new Joueur(name2, c2);
 
     /* Attribution du tour */
-    m_tourJ1 = true;
+    m_tourJ1 = 1;
 }
 
 void Jeu::initPlateau()
@@ -117,21 +160,35 @@ void Jeu::initPlateau()
 
 void Jeu::Start()
 {
-    this->getPlateau()->affiche();
-    InterfaceJoueur();
-    if (m_tourJ1)
+    etatTourPhase1 = 1;
+    do
     {
-        cout << " > C'est au tour de : [ " << getJoueur1()->getNom() << " ] de jouer ..." << endl;
-        int n = Commandes(m_j1);
-        afficheMenuSelection();
-    }
-    else
-    {
-        cout << " > C'est au tour de : [ " << getJoueur2()->getNom() << " ] de jouer ..." << endl;
-        Commandes(m_j2);
-    }
+        this->getPlateau()->affiche();
+        InterfaceJoueur();
+        switch (m_tourJ1)
+        {
+        case 1:
+            cout << " > C'est au tour de : [ " << getJoueur1()->getNom() << " ] de jouer ..." << endl;
+            selectionMenu(vecCasesJoueur1);
+            m_tourJ1 = 0;
+            break;
+        case 0:
+            cout << " > C'est au tour de : [ " << getJoueur2()->getNom() << " ] de jouer ..." << endl;
+            selectionMenu(vecCasesJoueur2);
+            m_tourJ1 = 1;
+            break;
+        default:
+            break;
+        }
+    } while (etatTourPhase1);
 }
 
+/**
+ * Interface des 2 joueurs à chaque display
+ * Juste la quantite d'or et de chateau
+ *
+ * non le joueur voit en fonction de lui ses actions
+ */
 void Jeu::InterfaceJoueur()
 {
     int lig = 4;
@@ -163,55 +220,91 @@ void Jeu::InterfaceJoueur()
     cout << endl;
 }
 
-int Jeu::Commandes(Joueur *j)
+/**
+ * TODO: Voir pour utiliser map pour menu
+ *
+ */
+void Jeu::afficheSelectionPion(vector<Case *> vecCases)
 {
-    int num;
-    cout << endl;
-    cout << "# Liste des commandes:" << endl;
-    cout << "____________________" << endl;
-    cout << "   1-Sélectionner un pion" << endl;
-    cout << "   2- " << endl;
-    cout << "   3-Passer son tour" << endl;
-
-    cout << "Sélectionner une commande :" << endl;
-    cin >> num ;
-    return num;
-
+    cout << "Vous possédez " << vecCases.size() << " pions." << endl;
+    for (int i = 0; i < (int)vecCases.size(); i++)
+    {
+        cout << (i + 1)
+             << " - Pion: "
+             << vecCases[i]->getPion()->affichetype()
+             << " " << vecCases[i]->getPion()->getRef()
+             << "(" << enumToChar(vecCases[i]->getX()) << ", " << vecCases[i]->getY() << ")" << endl;
+    }
+    cout << ((int)vecCases.size() + 1)
+         << " - Retour au menu précédent" << endl;
 }
 
-void Jeu::afficheMenuSelection()
+void Jeu::afficheMenuTour()
 {
-    if (m_tourJ1)
-    {
-        cout << "Vous possédez " << vecCasesJoueur1.size() << " pions." << endl;
-        for (int i = 0 ; i < (int)vecCasesJoueur1.size(); i++)
-        {
-            cout <<  (i + 1)  
-                 << "- Pion: "
-                 << vecCasesJoueur1[i]->getPion()->affichetype()
-                 << " " << vecCasesJoueur1[i]->getPion()->getRef()
-                 << "(" << enumToChar(vecCasesJoueur1[i]->getX()) << ", " << vecCasesJoueur1[i]->getY() << ")" << endl;
-        }
-    }
-    else
-    {
-        cout << "Vous possédez " << vecCasesJoueur2.size() << " pions." << endl;
-        for (int i = 0 ; i < (int)vecCasesJoueur2.size(); i++)
-        {
-            cout << "- Pion: "
-                 << vecCasesJoueur2[i]->getPion()->affichetype()
-                 << " " << vecCasesJoueur2[i]->getPion()->getRef()
-                 << "(" << vecCasesJoueur2[i]->getX() << ", " << vecCasesJoueur2[i]->getY() << ")" << endl;
-        }
-    }
+    cout << "# Menu Principal :" << endl;
+    cout << "   1 - Sélectionner un pion" << endl;
+    cout << "   2 - Finir son tour" << endl;
+    cout << "   3 - Pause" << endl;
+    cout << "   4 - Quitter la partie" << endl;
 }
 
-Case *Jeu::selectionPion(int num) const
+void Jeu::selectionMenu(vector<Case *> vecCases)
 {
-    if (m_tourJ1)
-        return vecCasesJoueur1[num];
+    int choix = 0;
+    do
+    {
+        cout << endl;
+        afficheMenuTour();
+        cout << endl;
+        cout << "Sélectionner un menu: ";
+        choix = choixMenu();
+        cin.clear();
+        switch (choix)
+        {
+        case 1:
+            choixPion(vecCases);
+            break;
+        case 2:
+            /**
+             * TODO: A faire..
+             */
+            cout << "Finir son tour" << endl;
+            
+            break;
+        case 3:
+            cout << "Pause";
+            break;
+        case 4:
+            cout << endl;
+            cout << "Vous quittez la partie !" << endl;
+            exit(1);
+            break;
+        default:
+            break;
+        }
+    } while ((choix != 4) && (choix != 2));
+}
+
+void Jeu::choixPion(vector<Case *> vecCases)
+{
+    int choix = 0;
+
+    afficheSelectionPion(vecCases);
+    choix = choixMenu() - 1;
+    cin.clear();
+    if (choix == (int)vecCases.size())
+        selectionMenu(vecCases);
     else
-        return vecCasesJoueur2[num];
+        selectionPion(choix, vecCases);
+    return;
+}
+
+/* Fonctions tests */
+Case *Jeu::selectionPion(int num, vector<Case *> vecCases) const
+{
+    if (num > (int)vecCases.size() && (int)vecCases.size() == 0)
+        exit(1);
+    return vecCases[num];
 }
 
 /********************************************************

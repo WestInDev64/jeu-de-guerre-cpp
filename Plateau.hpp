@@ -122,29 +122,30 @@ Plateau::Plateau(int nbx, int nby)
 
 /**
  * * Affichage du Plateau paramétrer sur 10*10
+ * TODO: A rectifier pour 2eme affichage (Pinaillage)
  */
 void Plateau::affiche()
 {
+    cout.clear();
     cout << endl;
-    size_t fieldWidth = 3; // length of longest text
     cout << "       0   1   2   3   4   5   6   7   8   9  " << endl;
     for (int i = 0; i < m_lig; i++)
     {
         cout << "     +---+---+---+---+---+---+---+---+---+---+" << endl;
-        cout << setw(fieldWidth) << internal << enumToChar(i) << "  |";
+        cout << setw(3) << enumToChar(i) << "  |";
         // cout << "  +---+---+---+---+---+---+---+---+---+---+" << endl;
         for (int j = 0; j < m_col; j++)
         {
             if (strlen(tabCase[i][j]->getPion()->getRef()) == 2)
-                cout << "" << tabCase[i][j]->getPion()->getRef() << " |";
+                cout << tabCase[i][j]->getPion()->getRef() << " |";
             else
-                cout << " "
-                     << "  |";
+                cout << "   |";
         }
         cout << endl;
     }
     cout << "     +---+---+---+---+---+---+---+---+---+---+" << endl;
     cout << endl;
+    getchar();
 }
 
 
