@@ -178,6 +178,8 @@ public:
         j->setOr(Chateau::m_prod);
     }
 
+    /** */
+
     Pion *construirePion(char c)
     {
         Pion *p;
