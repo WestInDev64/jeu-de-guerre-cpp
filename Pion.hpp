@@ -71,6 +71,10 @@ public:
         m_action = false;
     }
 
+    Joueur *getM_Joueur() {
+        return m_joueur;
+    }
+
 protected:
     /*Référence Joueur appartenant au pion  */
     Joueur *m_joueur;

@@ -144,21 +144,21 @@ void Jeu::InterfaceJoueur()
 
 /**
  * TODO: Voir pour utiliser map pour menu
- * 
+ *
  */
 void Jeu::afficheSelectionPion(vector<Case *> vecCases)
 {
     cout << "Vous possédez " << vecCases.size() << " pions." << endl;
     for (int i = 0; i < (int)vecCases.size(); i++)
     {
-        cout << "   "  
+        cout << "   "
              << (i + 1)
              << " - Pion: "
              << vecCases[i]->getPion()->affichetype()
              << " " << vecCases[i]->getPion()->getRef()
              << "(" << enumToChar(vecCases[i]->getX()) << ", " << vecCases[i]->getY() << ")" << endl;
     }
-    cout << "   " 
+    cout << "   "
          << ((int)vecCases.size() + 1)
          << " - Retour au menu précédent" << endl;
 }
@@ -193,7 +193,7 @@ void Jeu::selectionMenu(vector<Case *> vecCases)
              * TODO: A faire..
              */
             cout << "Finir son tour" << endl;
-            
+
             break;
         case 3:
             cout << "Pause";
@@ -218,10 +218,9 @@ void Jeu::choixPion(vector<Case *> vecCases)
     cin.clear();
     if (choix == (int)vecCases.size())
         selectionMenu(vecCases);
-    else{
+    else
+    {
         selectionPion(choix, vecCases);
-
-    
     }
     return;
 }
@@ -232,6 +231,16 @@ Case *Jeu::selectionPion(int num, vector<Case *> vecCases) const
     if (num > (int)vecCases.size() && (int)vecCases.size() == 0)
         exit(1);
     return vecCases[num];
+}
+
+void Jeu::transformerEnChateau(int x, int y)
+{
+    Pion *p = m_plateau->getTabCase()[x][x]->getPion();
+    Chateau *c = new Chateau(p->getM_Joueur());
+    m_plateau->getTabCase()[x][x]->setPion(c);
+    /* Pour dire que le chateau qui vient d'être construit ne peut pas faire d'action */
+    c->setAction(true);
+    delete p;
 }
 
 /********************************************************
@@ -260,4 +269,3 @@ void Jeu::setCase(Pion *p, int x, int y)
 {
     m_plateau->getTabCase()[x][y]->setPion(p);
 }
-
