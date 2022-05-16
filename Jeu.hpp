@@ -5,6 +5,7 @@
 #include "Joueur.hpp"
 #include "Case.hpp"
 #include "Pion.hpp"
+#include "Chateau.hpp"
 #include <string>
 #include <vector>
 

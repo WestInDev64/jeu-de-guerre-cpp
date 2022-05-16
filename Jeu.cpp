@@ -144,20 +144,22 @@ void Jeu::InterfaceJoueur()
 
 /**
  * TODO: Voir pour utiliser map pour menu
- *
+ * 
  */
 void Jeu::afficheSelectionPion(vector<Case *> vecCases)
 {
     cout << "Vous possédez " << vecCases.size() << " pions." << endl;
     for (int i = 0; i < (int)vecCases.size(); i++)
     {
-        cout << (i + 1)
+        cout << "   "  
+             << (i + 1)
              << " - Pion: "
              << vecCases[i]->getPion()->affichetype()
              << " " << vecCases[i]->getPion()->getRef()
              << "(" << enumToChar(vecCases[i]->getX()) << ", " << vecCases[i]->getY() << ")" << endl;
     }
-    cout << ((int)vecCases.size() + 1)
+    cout << "   " 
+         << ((int)vecCases.size() + 1)
          << " - Retour au menu précédent" << endl;
 }
 
@@ -216,8 +218,11 @@ void Jeu::choixPion(vector<Case *> vecCases)
     cin.clear();
     if (choix == (int)vecCases.size())
         selectionMenu(vecCases);
-    else
+    else{
         selectionPion(choix, vecCases);
+
+    
+    }
     return;
 }
 

@@ -33,6 +33,10 @@ public:
         return "Pion";
     }
 
+    virtual void afficheActions(){
+        
+    }
+
     /**
      * Peut servir dans le cas ou un chateau recrute un Pion,
      * Et que se Pion qui vient d'être créer ne pourra faire ses actions que le prochain tour
@@ -217,91 +221,6 @@ public:
 
 /* Action du Paysan pour produire de l'or au Joueur */
 
-class Chateau : public Pion
-{
 
-private:
-public:
-    /* Méthodes */
-    Chateau(Joueur *j) : Pion(j)
-    {
-        m_pow = 0;
-        m_pdv = 20;
-        m_pdm = 0;
-        m_prod = 2;
-        m_cout = 15;
-        m_ref[0] = 'C';
-        m_ref[1] = j->getCouleur();
-        m_joueur = j;
-    }
-
-    /* Un chateau peut recruter si le joueur à assez d'or (minimum requis 10 d'or) */
-    bool peutRecruter(Joueur *j)
-    {
-        if (j->getOr() < 10)
-        {
-            return false;
-        }
-        return true;
-    }
-
-    /** Retourne une chaine pour indiquer qu'elle sont les pions qui peuvent être recruter
-     * Exemple : Si le joueur à 15 d'or, la chaine sera "SG" car il a pas assez d'or pour un paysan
-     *
-     */
-    string recrutementPossible(Joueur *j)
-    {
-        string pionRecrutable = "";
-        if (j->getOr() >= 20)
-        {
-            pionRecrutable += "P";
-        }
-        if (j->getOr() >= 10)
-        {
-            pionRecrutable += "SG";
-        }
-        return pionRecrutable;
-    }
-
-    /** Produit de l'or passivement au début du tour du joueur
-     *  (Ne compte pas comme une action)
-     *
-     */
-    void produireOr(Joueur *j)
-    {
-        j->setOr(m_prod);
-    }
-
-    /**
-     * Retourne un Pion dont le joueur veut construire
-     *  Exemple : Le paramètre est P le Chateau recrute un Paysan;
-     *
-     * */
-    Pion *construirePion(char c)
-    {
-        Pion *p;
-        switch (c)
-        {
-        case 'P':
-            p = new Paysan(this->m_joueur);
-            break;
-
-        case 'S':
-            p = new Seigneur(this->m_joueur);
-            break;
-
-        case 'G':
-            p = new Guerrier(this->m_joueur);
-            break;
-        }
-        m_action = true;
-        return p;
-    }
-
-    string affichetype()
-    {
-        return "Chateau";
-    }
-};
 
 #endif // PION_HPP
