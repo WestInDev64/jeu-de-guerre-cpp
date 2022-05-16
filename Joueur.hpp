@@ -26,6 +26,7 @@ public:
     /* Mutateurs */
     void setOr(int o);
     void setNbChateau();
+    void taxeDesChateaux();
 };
 
 

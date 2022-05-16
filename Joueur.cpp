@@ -14,6 +14,11 @@ Joueur::Joueur(string const &name, char const &color)
     m_couleur = color;
 }
 
+/* Les chateaux rapportent de l'or au début du tour d'un joueur */
+void Joueur::taxeDesChateaux() {
+    m_qteOr += m_nbChateau * 2;
+}
+
 
 /********************************************************
  *                      Accesseurs                      *

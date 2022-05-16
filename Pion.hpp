@@ -15,7 +15,8 @@ public:
         m_joueur = j;
     }
     // virtual std::string affichePion() = 0;
-    const char * getRef() const{
+    const char *getRef() const
+    {
         return m_ref;
     }
 
@@ -39,10 +40,10 @@ public:
 
     /**
      * Peut servir dans le cas ou un chateau recrute un Pion,
-     * Et que se Pion qui vient d'être créer ne pourra faire ses actions que le prochain tour
+     * Et que ce Pion qui vient d'être créer ne pourra faire ses actions que le prochain tour
      *
      * Exemple, un Chateau recrute un Paysan,
-     *  se paysan ne pourra se deplacer ou récolter que le prochain tour
+     *  ce paysan ne pourra se deplacer ou récolter que le prochain tour
      *
      */
     void setAction(bool a)
@@ -218,9 +219,5 @@ public:
         return "Paysan";
     }
 };
-
-/* Action du Paysan pour produire de l'or au Joueur */
-
-
 
 #endif // PION_HPP
