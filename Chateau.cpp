@@ -24,57 +24,49 @@ bool Chateau::peutRecruter(Joueur *j)
     return true;
 }
 
-/** Retourne une chaine pour indiquer qu'elle sont les pions qui peuvent être recruter
- * Exemple : Si le joueur à 15 d'or, la chaine sera "SG" car il a pas assez d'or pour un paysan
- *
- */
-string Chateau::recrutementPossible(Joueur *j)
-{
-    string pionRecrutable = "";
-    if (j->getOr() >= 20)
-    {
-        pionRecrutable += "P";
-    }
-    if (j->getOr() >= 10)
-    {
-        pionRecrutable += "SG";
-    }
-    return pionRecrutable;
-}
-
-/** Produit de l'or passivement au début du tour du joueur
- *  (Ne compte pas comme une action)
- *
- */
-void Chateau::produireOr(Joueur *j)
-{
-    j->setOr(m_prod);
-}
-
 /**
  * Retourne un Pion dont le joueur veut construire
  *  Exemple : Le paramètre est P le Chateau recrute un Paysan;
  *
  * */
-Pion *Chateau::construirePion(char c)
+void Chateau::construirePion(int i)
 {
     Pion *p;
-    switch (c)
+    switch (i)
     {
-    case 'P':
-        p = new Paysan(this->m_joueur);
+    case 3:
+        if (this->m_joueur->getOr() >= 20)
+        {
+            p = new Paysan(this->m_joueur);
+        }
+        else
+        {
+            cout << "Recrutement impossible, il vous faut : " << Paysan::getCout() << " d'or !" << endl;
+        }
         break;
 
-    case 'S':
-        p = new Seigneur(this->m_joueur);
+    case 1:
+        if (this->m_joueur->getOr() >= 10)
+        {
+            p = new Seigneur(this->m_joueur);
+        }
+        else
+        {
+            cout << "Recrutement impossible, il vous faut : " << Seigneur::getCout() << " d'or !" << endl;
+        }
         break;
-
-    case 'G':
-        p = new Guerrier(this->m_joueur);
+    case 2:
+        if (this->m_joueur->getOr() >= 10)
+        {
+            p = new Guerrier(this->m_joueur);
+        }
+        else
+        {
+            cout << "Recrutement impossible, il vous faut : " << Guerrier::getCout() << " d'or !" << endl;
+        }
         break;
     }
-    m_action = true;
-    return p;
+    this->m_action = true;
 }
 
 string Chateau::affichetype()
@@ -93,8 +85,8 @@ void Chateau::afficheActions()
 void Chateau::afficheRecruter()
 {
     cout << "# Menu Principal :" << endl;
-    cout << "   1 - Recruter un Seigneur | "
-         << "   2 - Recruter un Guerrier | "
-         << "   3 - Recruter un Paysan" << endl;
+    cout << "   1 - Recruter un Seigneur | *" << Seigneur::getCout() << " D'OR"
+         << "   2 - Recruter un Guerrier | *" << Guerrier::getCout() << " D'OR*"
+         << "   3 - Recruter un Paysan   | *" << Paysan::getCout() << " D'OR" << endl;
     cout << "   4 - Retour" << endl;
 }
