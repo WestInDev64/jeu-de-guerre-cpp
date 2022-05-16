@@ -34,8 +34,8 @@ public:
         return "Pion";
     }
 
-    virtual void afficheActions(){
-        
+    virtual void afficheActions()
+    {
     }
 
     /**
@@ -71,6 +71,10 @@ public:
         m_action = false;
     }
 
+    Joueur *getM_Joueur() {
+        return m_joueur;
+    }
+
 protected:
     /*Référence Joueur appartenant au pion  */
     Joueur *m_joueur;
@@ -98,7 +102,7 @@ class Guerrier : public Pion
 private:
     /* Pour que le Guerrier puisse se déplacer puis attaquer */
     bool m_seDeplace = false;
-
+    static int m_cout;
 public:
     Guerrier(Joueur *j) : Pion(j)
     {
@@ -131,12 +135,17 @@ public:
     {
         m_seDeplace = true;
     }
+    static int getCout()
+    {
+        return m_cout;
+    }
 };
 
 class Seigneur : public Pion
 {
 private:
     bool m_seDeplace = false;
+    static int m_cout;
 
 public:
     Seigneur(Joueur *j) : Pion(j)
@@ -180,12 +189,17 @@ public:
     {
         return "Seigneur";
     }
+    static int getCout()
+    {
+        return m_cout;
+    }
 };
 
 class Paysan : public Pion
 {
 private:
     bool m_seDeplace = false;
+    static int m_cout;
 
 public:
     Paysan(Joueur *j) : Pion(j)
@@ -217,6 +231,10 @@ public:
     string affichetype()
     {
         return "Paysan";
+    }
+    static int getCout()
+    {
+        return m_cout;
     }
 };
 

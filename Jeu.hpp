@@ -82,7 +82,7 @@ public:
     Joueur *getJoueur1() const;
     Joueur *getJoueur2() const;
     Case *selectionPion(int num, vector<Case *> vecCases) const;
-
+    void transformerEnChateau(int x, int y);
     /* mutateurs */
     void setCase(Pion *p, int x, int y);
 };

@@ -283,6 +283,18 @@ vector<Case *> Jeu::vecCasesAjacentes(int x, int y)
         vec.push_back(m_plateau->getTabCase()[x][y - 1]);
 
     return vec;
+
+}
+
+/* Transforme un Seigneur en Chateau */
+void Jeu::transformerEnChateau(int x, int y)
+{
+    Pion *p = m_plateau->getTabCase()[x][x]->getPion();
+    Chateau *c = new Chateau(p->getM_Joueur());
+    m_plateau->getTabCase()[x][x]->setPion(c);
+    /* Pour dire que le chateau qui vient d'être construit ne peut pas faire d'action */
+    c->setAction(true);
+    delete p;
 }
 
 /********************************************************
