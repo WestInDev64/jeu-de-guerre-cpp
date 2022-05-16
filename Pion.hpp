@@ -13,7 +13,7 @@ public:
     }
     // virtual std::string affichePion() = 0;
     const char *getRef() const;
-    
+
     int getPdv()
     {
         return m_pdv;
@@ -23,9 +23,23 @@ public:
     {
         m_pdv = pdv;
     }
-    virtual string affichetype(){
+    virtual string affichetype()
+    {
         return "Pion";
     };
+
+    /**
+     * Peut servir dans le cas ou un chateau recrute un Pion,
+     * Et que se Pion qui vient d'être créer ne pourra faire ses actions que le prochain tour
+     *
+     * Exemple, un Chateau recrute un Paysan,
+     *  se paysan ne pourra se deplacer ou récolter que le prochain tour
+     *
+     */
+    void setAction(bool a)
+    {
+        m_action = a;
+    }
 
     bool getAction()
     {
@@ -77,7 +91,8 @@ const char *Pion::getRef() const
 class Guerrier : public Pion
 {
 private:
-    bool seDeplace = false;
+    /* Pour que le Guerrier puisse se déplacer puis attaquer */
+    bool m_seDeplace = false;
 
 public:
     Guerrier(Joueur *j) : Pion(j)
@@ -97,13 +112,27 @@ public:
         p->setPdv(p->getPdv() - this->m_pow);
     }
 
-    string affichetype(){
+    string affichetype()
+    {
         return "Guerrier";
+    }
+
+    bool getSeDeplace()
+    {
+        return m_seDeplace;
+    }
+
+    void s_estDeplacer()
+    {
+        m_seDeplace = true;
     }
 };
 
 class Seigneur : public Pion
 {
+private:
+    bool m_seDeplace = false;
+
 public:
     Seigneur(Joueur *j) : Pion(j)
     {
@@ -117,19 +146,42 @@ public:
         m_joueur = j;
     }
 
+    /* Un Seigneur peut se Transformer si le joueur à assez d'or */
+    bool peutSeTransformer(Joueur *j)
+    {
+        if (j->getOr() >= 15)
+        {
+            return true;
+        }
+        return false;
+    }
+
     void attaque(Pion *p)
     {
         p->setPdv(p->getPdv() - this->m_pow);
     }
 
-    string affichetype(){
-        return "Seigneur";
+    bool getSeDeplace()
+    {
+        return m_seDeplace;
     }
 
+    void s_estDeplacer()
+    {
+        m_seDeplace = true;
+    }
+
+    string affichetype()
+    {
+        return "Seigneur";
+    }
 };
 
 class Paysan : public Pion
 {
+private:
+    bool m_seDeplace = false;
+
 public:
     Paysan(Joueur *j) : Pion(j)
     {
@@ -144,12 +196,23 @@ public:
     }
     void produireOr(Joueur *j);
 
-    string affichetype(){
-        return "Paysan";
+    bool getSeDeplace()
+    {
+        return m_seDeplace;
     }
 
+    void s_estDeplacer()
+    {
+        m_seDeplace = true;
+    }
+
+    string affichetype()
+    {
+        return "Paysan";
+    }
 };
 
+/* Action du Paysan pour produire de l'or au Joueur */
 void Paysan::produireOr(Joueur *j)
 {
     j->setOr(Paysan::m_prod);
@@ -173,11 +236,48 @@ public:
         m_joueur = j;
     }
 
+    /* Un chateau peut recruter si le joueur à assez d'or (minimum requis 10 d'or) */
+    bool peutRecruter(Joueur *j)
+    {
+        if (j->getOr() < 10)
+        {
+            false;
+        }
+        return true;
+    }
+
+    /** Retourne une chaine pour indiquer qu'elle sont les pions qui peuvent être recruter
+     * Exemple : Si le joueur à 15 d'or, la chaine sera "SG" car il a pas assez d'or pour un paysan
+     *
+     */
+    string recrutementPossible(Joueur *j)
+    {
+        string pionRecrutable = "";
+        if (j->getOr() >= 20)
+        {
+            pionRecrutable += "P";
+        }
+        if (j->getOr() >= 10)
+        {
+            pionRecrutable += "SG";
+        }
+        return pionRecrutable;
+    }
+
+    /** Produit de l'or passivement au début du tour du joueur
+     *  (Ne compte pas comme une action)
+     *
+     */
     void produireOr(Joueur *j)
     {
         j->setOr(Chateau::m_prod);
     }
 
+    /**
+     * Retourne un Pion dont le joueur veut construire
+     *  Exemple : Le paramètre est P le Chateau recrute un Paysan;
+     *
+     * */
     Pion *construirePion(char c)
     {
         Pion *p;
@@ -199,7 +299,8 @@ public:
         return p;
     }
 
-    string affichetype(){
+    string affichetype()
+    {
         return "Chateau";
     }
 };
