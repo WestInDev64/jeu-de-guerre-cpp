@@ -28,6 +28,7 @@ protected:
 
     vector<Case *> vecCasesJoueur1;
     vector<Case *> vecCasesJoueur2;
+    
     // vector<Case*> vecCasesJ1;
 
 public:
@@ -42,6 +43,9 @@ public:
     void afficheSelectionPion(vector<Case *> vecCases);
     void selectionMenu(vector<Case *> vecCases);
     void choixPion(vector<Case *> vecCases);
+
+
+    vector<Case*> vecCasesAjacentes(int x, int y);
 
     /**
      * TODO: Méthode estGameOver()

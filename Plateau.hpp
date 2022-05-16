@@ -40,6 +40,7 @@ public:
      */
     void affiche();
     Case *** getTabCase() const;
+    int getNbCol() const;
 };
 
 #endif // PLATEAU_HPP

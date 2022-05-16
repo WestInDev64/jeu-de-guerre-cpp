@@ -90,6 +90,10 @@ void Jeu::Start()
         switch (m_tourJ1)
         {
         case 1:
+            /**
+             * TODO: Debut du tour appeler TaxeChateau du Joueur
+             *
+             */
             cout << " > C'est au tour de : [ " << getJoueur1()->getNom() << " ] de jouer ..." << endl;
             selectionMenu(vecCasesJoueur1);
             m_tourJ1 = 0;
@@ -144,21 +148,21 @@ void Jeu::InterfaceJoueur()
 
 /**
  * TODO: Voir pour utiliser map pour menu
- * 
+ *
  */
 void Jeu::afficheSelectionPion(vector<Case *> vecCases)
 {
     cout << "Vous possédez " << vecCases.size() << " pions." << endl;
     for (int i = 0; i < (int)vecCases.size(); i++)
     {
-        cout << "   "  
+        cout << "   "
              << (i + 1)
              << " - Pion: "
              << vecCases[i]->getPion()->affichetype()
              << " " << vecCases[i]->getPion()->getRef()
              << "(" << enumToChar(vecCases[i]->getX()) << ", " << vecCases[i]->getY() << ")" << endl;
     }
-    cout << "   " 
+    cout << "   "
          << ((int)vecCases.size() + 1)
          << " - Retour au menu précédent" << endl;
 }
@@ -193,7 +197,7 @@ void Jeu::selectionMenu(vector<Case *> vecCases)
              * TODO: A faire..
              */
             cout << "Finir son tour" << endl;
-            
+
             break;
         case 3:
             cout << "Pause";
@@ -213,15 +217,26 @@ void Jeu::choixPion(vector<Case *> vecCases)
 {
     int choix = 0;
 
+
     afficheSelectionPion(vecCases);
     choix = choixMenu() - 1;
     cin.clear();
+
+    /* Retour menu précédent */
     if (choix == (int)vecCases.size())
         selectionMenu(vecCases);
-    else{
-        selectionPion(choix, vecCases);
 
-    
+    /* Selection de la case  */
+    else
+    {
+        /**
+         * 1 - Renvoi la case sélectionné
+         * 2 - Retourne un vecteur de cases adjacentes 
+         * 3 - Affiche les cases adjacentes dans le tableau
+         * 4 - Affiche le tableau
+         */ 
+        Case * c = selectionPion(choix, vecCases);
+        vecCasesAjacentes(c->getX(), c->getY());
     }
     return;
 }
@@ -232,6 +247,42 @@ Case *Jeu::selectionPion(int num, vector<Case *> vecCases) const
     if (num > (int)vecCases.size() && (int)vecCases.size() == 0)
         exit(1);
     return vecCases[num];
+}
+
+
+/**
+ * Renvoi un Vecteur de cases adjacentes à la case sélectionnée
+ */
+vector<Case *> Jeu::vecCasesAjacentes(int x, int y)
+{
+    vector<Case *> vec;
+    int nb_col = m_plateau->getNbCol();
+    int posCase = x * nb_col + y;
+
+    if (posCase / nb_col == 0) // <- 1ere ligne
+    {
+        vec.push_back(m_plateau->getTabCase()[x + 1][y]);
+        if (posCase % nb_col != 0) // <- sans coin gauche
+            vec.push_back(m_plateau->getTabCase()[x][y - 1]);
+        if (posCase % nb_col != (nb_col - 1)) // <- sans coin droit
+            vec.push_back(m_plateau->getTabCase()[x][y + 1]);
+    }
+
+    if (posCase / nb_col == (nb_col - 1)) // <- dernière ligne
+    {
+        vec.push_back(m_plateau->getTabCase()[x - 1][y]);
+        if (posCase % nb_col != 0) // <- sans coin gauche
+            vec.push_back(m_plateau->getTabCase()[x][y - 1]);
+        if (posCase % nb_col != (nb_col - 1)) // <- sans coin droit
+            vec.push_back(m_plateau->getTabCase()[x][y + 1]);
+    }
+
+    if (posCase % nb_col == 0) // <- 1ere colonne
+        vec.push_back(m_plateau->getTabCase()[x][y + 1]);
+    if (posCase % nb_col == (nb_col - 1)) // <- dernière colonne
+        vec.push_back(m_plateau->getTabCase()[x][y - 1]);
+
+    return vec;
 }
 
 /********************************************************
@@ -260,4 +311,3 @@ void Jeu::setCase(Pion *p, int x, int y)
 {
     m_plateau->getTabCase()[x][y]->setPion(p);
 }
-

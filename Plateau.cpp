@@ -113,3 +113,8 @@ void Plateau::affiche()
     cout << endl;
     getchar();
 }
+
+int Plateau::getNbCol() const
+{
+    return m_col;
+}

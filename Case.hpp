@@ -17,6 +17,9 @@ public:
     Case();
     Case(int x, int y);
     void setPion( Pion * p);
+    vector<Case*> vecCasesAjacentes(int nb_col);
+
+
 
     /* Accesseurs */
     Pion* getPion() const;

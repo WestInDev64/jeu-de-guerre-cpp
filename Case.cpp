@@ -1,4 +1,6 @@
 #include "Case.hpp"
+#include <vector>
+#include "Plateau.hpp"
 
 Case::Case()
 {
@@ -26,8 +28,7 @@ int Case::getY() const {
     return posy;
 }
 
-
-
 void Case::setPion(Pion * p){
     m_pion = p;
 }
+
