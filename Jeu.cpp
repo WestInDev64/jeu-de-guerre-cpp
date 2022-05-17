@@ -58,20 +58,24 @@ void Jeu::Init()
     m_tourJ = 0;
 }
 
+/**
+ * TODO: Ajouter paramètres a l'init plateau nb_lig / nb_col
+ * calculer l'emplacement de départ chateau + paysan automatiquement
+ */
 void Jeu::initPlateau()
 {
     m_plateau = new Plateau(10, 10);
 
-    Pion *chatj1 = new Chateau(m_j1);
-    Pion *payj1 = new Paysan(m_j1);
+    Pion *chatj1 = new Chateau(m_j1,1,1);
+    Pion *payj1 = new Paysan(m_j1,1,2);
     setCase(chatj1, 1, 1);
     setCase(payj1, 1, 2);
     vecCasesJoueur1.push_back(m_plateau->getTabCase()[1][1]);
     vecCasesJoueur1.push_back(m_plateau->getTabCase()[1][2]);
     m_j1->setNbChateau();
 
-    Pion *chatj2 = new Chateau(m_j2);
-    Pion *payj2 = new Paysan(m_j2);
+    Pion *chatj2 = new Chateau(m_j2,8,8);
+    Pion *payj2 = new Paysan(m_j2,8,7);
     setCase(chatj2, 8, 8);
     setCase(payj2, 8, 7);
     vecCasesJoueur2.push_back(m_plateau->getTabCase()[8][8]);
@@ -330,7 +334,7 @@ void Jeu::transformerEnChateau(int x, int y)
     Pion *p = m_plateau->getTabCase()[x][y]->getPion();
 
     /* Création d'un chateau */
-    Chateau *c = new Chateau(p->getM_Joueur());
+    Chateau *c = new Chateau(p->getM_Joueur(),x,y);
 
     /* Set le Chateau c dans la case x y */
     m_plateau->getTabCase()[x][y]->setPion(c);
@@ -349,7 +353,7 @@ void Jeu::marqueCasesAdj(vector<Case *> &vec)
     for (auto e : vec)
     {
         if (e->getPion()->getRef() == " " || e->getPion()->getRef() == " + ")
-            e->setPion(new PionVide());
+            e->setPion(new PionVide(e->getX(), e->getY()));
     }
 }
 

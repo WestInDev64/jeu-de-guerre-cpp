@@ -4,12 +4,11 @@
 
 Case::Case()
 {
-    m_pion = new Pion();
 }
 
 Case::Case(int x, int y)
 {
-    m_pion = new Pion();
+    m_pion = new Pion(x,y);
     posx = x;
     posy = y;
 }

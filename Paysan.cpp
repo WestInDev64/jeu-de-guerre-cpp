@@ -4,7 +4,7 @@
 
 using namespace std;
 
-Paysan::Paysan(Joueur *j) : Pion(j)
+Paysan::Paysan(Joueur *j, int x, int y) : Pion(j,x,y)
 {
     m_pow = 0;
     m_pdv = 1;

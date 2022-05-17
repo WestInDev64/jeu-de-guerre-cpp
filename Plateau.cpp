@@ -18,8 +18,6 @@ Plateau::Plateau(int nbx, int nby)
         {
             /* init du constr de Case dans chaque cellule */
             tabCase[x][y] = new Case(x, y);
-            Pion * p = new Pion();
-            tabCase[x][y]->setPion(p);
         }
     }
 }

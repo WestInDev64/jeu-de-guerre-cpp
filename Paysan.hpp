@@ -9,7 +9,7 @@ private:
     bool m_seDeplace = false;
 
 public:
-    Paysan(Joueur *j);
+    Paysan(Joueur *j, int x, int y);
     void produireOrS(Joueur *j);
     bool getSeDeplace();
     void s_estDeplacer();

@@ -30,14 +30,19 @@ protected:
     string m_ref;
 
 public:
-    Pion(){
+    Pion(int x, int y)
+    {
         m_ref = " ";
+        m_posx = x;
+        m_posy = y;
     };
 
-    Pion(Joueur *j)
+    Pion(Joueur *j, int x, int y)
     {
         m_joueur = j;
-        m_ref = " " + j->getCouleur() ;
+        m_ref = " " + j->getCouleur();
+        m_posx = x;
+        m_posy = y;
     }
 
     virtual ~Pion()
@@ -71,9 +76,9 @@ public:
         return "Pion";
     }
 
-    virtual void afficheActions(){}
+    virtual void afficheActions() {}
 
-    virtual void selectActions(){}
+    virtual void selectActions() {}
     /**
      * Peut servir dans le cas ou un chateau recrute un Pion,
      * Et que ce Pion qui vient d'être créer ne pourra faire ses actions que le prochain tour
@@ -97,21 +102,22 @@ public:
         m_action = false;
     }
 
-    int getX() const{
+    int getX() const
+    {
         return m_posx;
     }
 
-    int getY() const{
+    int getY() const
+    {
         return m_posy;
     }
-
 };
 
 class PionVide : public Pion
 {
 
 public:
-    PionVide()
+    PionVide(int x, int y) : Pion(x, y)
     {
         m_ref = " + ";
     }
@@ -128,7 +134,7 @@ private:
     bool m_seDeplace = false;
 
 public:
-    Guerrier(Joueur *j) : Pion(j)
+    Guerrier(Joueur *j, int x, int y) : Pion(j,x,y)
     {
         m_pow = 5;
         m_pdv = 10;
@@ -170,7 +176,7 @@ private:
     bool m_seDeplace = false;
 
 public:
-    Seigneur(Joueur *j) : Pion(j)
+    Seigneur(Joueur *j, int x, int y) : Pion(j,x,y)
     {
         m_pow = 3;
         m_pdv = 5;
@@ -210,8 +216,6 @@ public:
     {
         return "Seigneur";
     }
-
 };
-
 
 #endif // PION_HPP

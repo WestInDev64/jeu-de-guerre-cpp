@@ -11,7 +11,7 @@ private:
     array<int,3> m_coutrect;
 public:
     /* Méthodes */
-    Chateau(Joueur *j);
+    Chateau(Joueur *j,  int x, int y);
 
     /* Un chateau peut recruter si le joueur à assez d'or (minimum requis 10 d'or) */
     bool peutRecruter(Joueur *j);

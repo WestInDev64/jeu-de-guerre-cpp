@@ -4,7 +4,7 @@
 #include "Paysan.hpp"
 
 /* Méthodes */
-Chateau::Chateau(Joueur *j) : Pion(j)
+Chateau::Chateau(Joueur *j, int x, int y) : Pion(j, x, y)
 {
     m_pow = 0;
     m_pdv = 20;
@@ -29,7 +29,7 @@ bool Chateau::peutRecruter(Joueur *j)
 /**
  * Retourne un Pion dont le joueur veut construire
  *  Exemple : Le paramètre est P le Chateau recrute un Paysan;
- * !ERROR DESTRUCTEUR 
+ * !ERROR DESTRUCTEUR
  *
  * */
 void Chateau::construirePion(int i)
@@ -39,19 +39,22 @@ void Chateau::construirePion(int i)
     {
     case 1:
         if (this->m_joueur->getOr() >= 10)
-            p = new Seigneur(this->m_joueur);
+            cout << "Recrutement possible " << endl;
+        // p = new Seigneur(this->m_joueur);
         else
             cout << "Recrutement impossible, il vous faut : " << dynamic_cast<Seigneur *>(this)->getCout() << " d'or !" << endl;
         break;
     case 2:
         if (this->m_joueur->getOr() >= 10)
-            p = new Guerrier(this->m_joueur);
+            cout << "Recrutement possible " << endl;
+        // p = new Guerrier(this->m_joueur);
         else
             cout << "Recrutement impossible, il vous faut : " << dynamic_cast<Guerrier *>(this)->getCout() << " d'or !" << endl;
         break;
     case 3:
         if (this->m_joueur->getOr() >= 20)
-            p = new Paysan(this->m_joueur);
+            cout << "Recrutement possible " << endl;
+        // p = new Paysan(this->m_joueur);
         else
             cout << "Recrutement impossible, il vous faut : " << dynamic_cast<Paysan *>(this)->getCout() << " d'or !" << endl;
         break;
