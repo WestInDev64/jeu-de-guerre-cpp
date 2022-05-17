@@ -1,4 +1,5 @@
 #include "Jeu.hpp"
+#include <limits>
 
 inline int choixMenu()
 {
@@ -13,7 +14,7 @@ Jeu::Jeu()
 
 void Jeu::Init()
 {
-    char c1 = '-', c2 = '-';
+    string c1 = "-", c2 = "-";
     string name1 = "";
     string name2 = "";
 
@@ -34,9 +35,9 @@ void Jeu::Init()
         cout << "Veuillez sélectionner une couleur : Rouge / Bleu (R/B) ?";
         cin >> c1;
         cout << c1 << endl;
-        if (c1 != 'R' && c1 != 'B')
+        if (c1 != "R" && c1 != "B")
             cout << "Erreur lors du choix de la couleur !" << endl;
-    } while (c1 != 'R' && c1 != 'B');
+    } while (c1 != "R" && c1 != "B");
 
     /* Init Joueur 2 */
     do
@@ -47,10 +48,10 @@ void Jeu::Init()
             cout << "Erreur, veuillez entrer un nom valide." << endl;
     } while (name2 == "");
 
-    c1 == 'R' ? c2 = 'B' : c2 = 'R';
+    c1 == "R" ? c2 = "B" : c2 = "R";
 
     /* Affichage couleur du 2eme joueur */
-    c2 == 'R' ? cout << name2 << " sera donc le joueur Rouge" << endl : cout << name2 << " sera donc le joueur Bleu" << endl;
+    c2 == "R" ? cout << name2 << " sera donc le joueur Rouge" << endl : cout << name2 << " sera donc le joueur Bleu" << endl;
 
     /* Fin de fonction  */
     /* Allocations Joueurs */
@@ -71,6 +72,7 @@ void Jeu::initPlateau()
     setCase(payj1, 1, 2);
     vecCasesJoueur1.push_back(m_plateau->getTabCase()[1][1]);
     vecCasesJoueur1.push_back(m_plateau->getTabCase()[1][2]);
+    m_j1->setNbChateau();
 
     Pion *chatj2 = new Chateau(m_j2);
     Pion *payj2 = new Paysan(m_j2);
@@ -78,6 +80,7 @@ void Jeu::initPlateau()
     setCase(payj2, 8, 7);
     vecCasesJoueur2.push_back(m_plateau->getTabCase()[8][8]);
     vecCasesJoueur2.push_back(m_plateau->getTabCase()[8][7]);
+    m_j2->setNbChateau();
 }
 
 void Jeu::Start()
@@ -121,12 +124,12 @@ void Jeu::InterfaceJoueur()
     int col = 1;
     string labels[4] = {"Nom: ", "Couleur: ", "Or: ", "Nb de Chateau: "};
     string inputsj1[4] = {m_j1->getNom(),
-                          (m_j1->getCouleur() == 'R') ? ("Rouge") : ("Bleu"),
+                          (m_j1->getCouleur() == "R") ? ("Rouge") : ("Bleu"),
                           to_string(m_j1->getOr()),
                           to_string(m_j1->getNbChateau())};
 
     string inputsj2[4] = {m_j2->getNom(),
-                          (m_j2->getCouleur() == 'R') ? ("Rouge") : ("Bleu"),
+                          (m_j2->getCouleur() == "R") ? ("Rouge") : ("Bleu"),
                           to_string(m_j2->getOr()),
                           to_string(m_j2->getNbChateau())};
 
@@ -186,14 +189,24 @@ void Jeu::selectionMenu(vector<Case *> vecCases)
         cout << endl;
         cout << "Sélectionner un menu: ";
         choix = choixMenu();
+        /* CLEAR BUFFER après mauvaises saisies  */
         cin.clear();
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
         switch (choix)
         {
         case 1:
+            /**
+             * TODO: Faire un systeme d'affichage par pion ayant action true
+             */
             choixPion(vecCases);
             break;
         case 2:
             /**
+             * Non c'est des commentaires juste
+             * Mais y un plugin qui te fait la doc automatique
+             * il ecrit meme les phrases tout seul c ouf
+             * jte jure j'ai vu ca sur un twitch
+             * att jte montre !
              * TODO: A faire..
              */
             cout << "Finir son tour" << endl;
@@ -217,7 +230,6 @@ void Jeu::choixPion(vector<Case *> vecCases)
 {
     int choix = 0;
 
-
     afficheSelectionPion(vecCases);
     choix = choixMenu() - 1;
     cin.clear();
@@ -231,12 +243,14 @@ void Jeu::choixPion(vector<Case *> vecCases)
     {
         /**
          * 1 - Renvoi la case sélectionné
-         * 2 - Retourne un vecteur de cases adjacentes 
+         * 2 - Retourne un vecteur de cases adjacentes
          * 3 - Affiche les cases adjacentes dans le tableau
          * 4 - Affiche le tableau
-         */ 
-        Case * c = selectionPion(choix, vecCases);
-        vecCasesAjacentes(c->getX(), c->getY());
+         */
+        Case *c = selectionPion(choix, vecCases);
+        vecCasesAjacentes(c->getX(), c->getY(), vecCasesAdjacentes);
+        this->getPlateau()->affiche();
+        c->getPion()->afficheActions();
     }
     return;
 }
@@ -249,52 +263,92 @@ Case *Jeu::selectionPion(int num, vector<Case *> vecCases) const
     return vecCases[num];
 }
 
-
 /**
  * Renvoi un Vecteur de cases adjacentes à la case sélectionnée
  */
-vector<Case *> Jeu::vecCasesAjacentes(int x, int y)
+void Jeu::vecCasesAjacentes(int x, int y, vector<Case *> &vec)
 {
-    vector<Case *> vec;
     int nb_col = m_plateau->getNbCol();
-    int posCase = x * nb_col + y;
+    int posCase = x * nb_col + y; // 11
+    vec.clear();
+    cout << "TEST DEBT " << endl;
 
-    if (posCase / nb_col == 0) // <- 1ere ligne
+    /**
+     * TODO: Refaire les positions + affichage adjacents
+     * TODO: push back dans vecteur adjacents aussi 
+     * 
+     */ 
+    if (posCase / nb_col != 0) // <- 1ere ligne
     {
-        vec.push_back(m_plateau->getTabCase()[x + 1][y]);
+        cout << "TEST INSERT" << endl;
+        (m_plateau->getTabCase()[x + 1][y])->setPion(new PionVide());
         if (posCase % nb_col != 0) // <- sans coin gauche
             vec.push_back(m_plateau->getTabCase()[x][y - 1]);
         if (posCase % nb_col != (nb_col - 1)) // <- sans coin droit
             vec.push_back(m_plateau->getTabCase()[x][y + 1]);
     }
 
-    if (posCase / nb_col == (nb_col - 1)) // <- dernière ligne
+    if (posCase / nb_col != (nb_col - 1)) // <- dernière ligne
     {
-        vec.push_back(m_plateau->getTabCase()[x - 1][y]);
+        cout << "TEST " << endl;
+        vec.push_back(m_plateau->getTabCase()[x - 1][y]); // 
         if (posCase % nb_col != 0) // <- sans coin gauche
             vec.push_back(m_plateau->getTabCase()[x][y - 1]);
         if (posCase % nb_col != (nb_col - 1)) // <- sans coin droit
             vec.push_back(m_plateau->getTabCase()[x][y + 1]);
     }
 
-    if (posCase % nb_col == 0) // <- 1ere colonne
+    if (posCase % nb_col != 0) // <- 1ere colonne
+    {
+        cout << "TEST " << endl;
         vec.push_back(m_plateau->getTabCase()[x][y + 1]);
-    if (posCase % nb_col == (nb_col - 1)) // <- dernière colonne
+    }
+    if (posCase % nb_col != (nb_col - 1)) // <- dernière colonne
+    {
+        cout << "TEST " << endl;
         vec.push_back(m_plateau->getTabCase()[x][y - 1]);
+    }
+    cout << "TEST FiN " << endl;
 
-    return vec;
-
+    // marqueCasesAdj();
 }
 
 /* Transforme un Seigneur en Chateau */
 void Jeu::transformerEnChateau(int x, int y)
 {
-    Pion *p = m_plateau->getTabCase()[x][x]->getPion();
+    /* Recupere le pion en x, y */
+    Pion *p = m_plateau->getTabCase()[x][y]->getPion();
+
+    /* Création d'un chateau */
     Chateau *c = new Chateau(p->getM_Joueur());
-    m_plateau->getTabCase()[x][x]->setPion(c);
-    /* Pour dire que le chateau qui vient d'être construit ne peut pas faire d'action */
+
+    /* Set le Chateau c dans la case x y */
+    m_plateau->getTabCase()[x][y]->setPion(c);
+
+    /* Pour dire que le chateau qui
+    vient d'être construit ne peut
+    pas faire d'action */
     c->setAction(true);
+
+    /* delete p  */
     delete p;
+}
+
+void Jeu::marqueCasesAdj()
+{
+
+    // cout << vecCasesAdjacentes[0]->getPion()->affichetype() << endl; // NULL
+    for (int i = 0; i < m_plateau->getTaille(); i++)
+    {
+        for (auto e : vecCasesAdjacentes)
+        {
+            if (e == (*m_plateau->getTabCase()[i]))
+            {
+                Pion *pv = new PionVide();
+                (*m_plateau->getTabCase()[i])->setPion(pv);
+            }
+        }
+    }
 }
 
 /********************************************************

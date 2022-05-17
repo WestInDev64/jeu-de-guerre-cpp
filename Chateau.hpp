@@ -2,11 +2,13 @@
 #define CHATEAU_HPP
 
 #include "Pion.hpp"
+#include <array>
 
 class Chateau : public Pion
 {
 
 private:
+    array<int,3> m_coutrect;
 public:
     /* Méthodes */
     Chateau(Joueur *j);

@@ -6,25 +6,20 @@ Joueur::Joueur()
     m_tour = false;
 }
 
-Joueur::Joueur(string const &name, char const &color)
+Joueur::Joueur(string const &name, string const &color)
 {
     m_name = name;
     m_qteOr = 20;
     m_tour = false;
     m_couleur = color;
+    m_nbChateau = 0;
 }
-
-/* Les chateaux rapportent de l'or au début du tour d'un joueur */
-void Joueur::taxeDesChateaux() {
-    m_qteOr += m_nbChateau * 2;
-}
-
 
 /********************************************************
  *                      Accesseurs                      *
  ********************************************************/  
 
-char Joueur::getCouleur() const 
+string Joueur::getCouleur() const 
 {
     return m_couleur;
 }
@@ -60,4 +55,9 @@ void Joueur::setOr(int o)
 void Joueur::setNbChateau()
 {
     m_nbChateau += 1;
+}
+
+/* Les chateaux rapportent de l'or au début du tour d'un joueur */
+void Joueur::taxeDesChateaux() {
+    m_qteOr += m_nbChateau * 2;
 }

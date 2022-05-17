@@ -1,5 +1,6 @@
 CXX= g++
 CXXFLAGS= -Wall -Wextra -Wpedantic -std=c++17
+LEAK= -fno-omit-frame-pointer -fno-optimize-sibling-calls -fsanitize=address -fsanitize=undefined
 
 PROG= la-guerre
 VERSION= 0.1
@@ -10,6 +11,9 @@ OBJ= $(SRC:.cpp=.o)
 
 
 all: $(PROG)
+
+dev: 
+	$(CXX) $(CXXFLAGS) $(LEAK) -g $(SRC)
 
 $(PROG): $(OBJ)
 	$(CXX) $^ -o $@

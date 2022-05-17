@@ -8,73 +8,6 @@ using namespace std;
 
 class Pion
 {
-public:
-    Pion(){};
-    Pion(Joueur *j)
-    {
-        m_joueur = j;
-    }
-    // virtual std::string affichePion() = 0;
-    const char *getRef() const
-    {
-        return m_ref;
-    }
-
-    int getPdv()
-    {
-        return m_pdv;
-    }
-
-    void setPdv(int pdv)
-    {
-        m_pdv = pdv;
-    }
-    virtual string affichetype()
-    {
-        return "Pion";
-    }
-
-    virtual void afficheActions()
-    {
-    }
-
-    /**
-     * Peut servir dans le cas ou un chateau recrute un Pion,
-     * Et que ce Pion qui vient d'être créer ne pourra faire ses actions que le prochain tour
-     *
-     * Exemple, un Chateau recrute un Paysan,
-     *  ce paysan ne pourra se deplacer ou récolter que le prochain tour
-     *
-     */
-    void setAction(bool a)
-    {
-        m_action = a;
-    }
-
-    bool getAction()
-    {
-        return m_action;
-    }
-
-    int getPdm()
-    {
-        return m_pdm;
-    }
-
-    void setPdm(int m)
-    {
-        m_pdm = m;
-    }
-
-    void reinitAction()
-    {
-        m_action = false;
-    }
-
-    Joueur *getM_Joueur() {
-        return m_joueur;
-    }
-
 protected:
     /*Référence Joueur appartenant au pion  */
     Joueur *m_joueur;
@@ -94,7 +27,91 @@ protected:
     int m_posy;
 
     /* Référence nom du pion */
-    char m_ref[2];
+    string m_ref;
+
+public:
+    Pion(){
+        m_ref = " . ";
+    };
+
+    Pion(Joueur *j)
+    {
+        m_joueur = j;
+        m_ref = " . ";
+    }
+
+    virtual ~Pion()
+    {
+        delete this;
+    }
+
+    // virtual std::string affichePion() = 0;
+
+    /********************************************************
+     *                      Accesseurs                      *
+     ********************************************************/
+    string getRef() const { return m_ref; }
+
+    int getPdv() { return m_pdv; }
+
+    bool getAction() { return m_action; }
+
+    int getPdm() { return m_pdm; }
+
+    Joueur *getM_Joueur() { return m_joueur; }
+
+    int getCout() { return m_cout; }
+
+    void setPdv(int pdv)
+    {
+        m_pdv = pdv;
+    }
+    virtual string affichetype()
+    {
+        return "Pion";
+    }
+
+    void afficheActions()
+    {
+    }
+
+    /**
+     * Peut servir dans le cas ou un chateau recrute un Pion,
+     * Et que ce Pion qui vient d'être créer ne pourra faire ses actions que le prochain tour
+     *
+     * Exemple, un Chateau recrute un Paysan,
+     *  ce paysan ne pourra se deplacer ou récolter que le prochain tour
+     *
+     */
+    void setAction(bool a)
+    {
+        m_action = a;
+    }
+
+    void setPdm(int m)
+    {
+        m_pdm = m;
+    }
+
+    void reinitAction()
+    {
+        m_action = false;
+    }
+
+};
+
+class PionVide : public Pion
+{
+
+public:
+    PionVide()
+    {
+        m_ref = " + ";
+    }
+    string affichetype()
+    {
+        return "Pion vide";
+    }
 };
 
 class Guerrier : public Pion
@@ -102,7 +119,7 @@ class Guerrier : public Pion
 private:
     /* Pour que le Guerrier puisse se déplacer puis attaquer */
     bool m_seDeplace = false;
-    static int m_cout;
+
 public:
     Guerrier(Joueur *j) : Pion(j)
     {
@@ -111,8 +128,7 @@ public:
         m_pdm = 3;
         m_prod = 0;
         m_cout = 10;
-        m_ref[0] = 'G';
-        m_ref[1] = j->getCouleur();
+        m_ref = "G" + j->getCouleur();
         m_joueur = j;
     }
 
@@ -135,17 +151,16 @@ public:
     {
         m_seDeplace = true;
     }
-    static int getCout()
-    {
-        return m_cout;
-    }
+    /*   static int getCout()
+      {
+          return m_cout;
+      } */
 };
 
 class Seigneur : public Pion
 {
 private:
     bool m_seDeplace = false;
-    static int m_cout;
 
 public:
     Seigneur(Joueur *j) : Pion(j)
@@ -155,8 +170,7 @@ public:
         m_pdm = 1;
         m_prod = 0;
         m_cout = 10;
-        m_ref[0] = 'S';
-        m_ref[1] = j->getCouleur();
+        m_ref = "S" + j->getCouleur();
         m_joueur = j;
     }
 
@@ -189,17 +203,13 @@ public:
     {
         return "Seigneur";
     }
-    static int getCout()
-    {
-        return m_cout;
-    }
+
 };
 
 class Paysan : public Pion
 {
 private:
     bool m_seDeplace = false;
-    static int m_cout;
 
 public:
     Paysan(Joueur *j) : Pion(j)
@@ -209,8 +219,7 @@ public:
         m_pdm = 2;
         m_prod = 5;
         m_cout = 20;
-        m_ref[0] = 'P';
-        m_ref[1] = j->getCouleur();
+        m_ref = "P" + j->getCouleur();
         m_joueur = j;
     }
     void produireOrS(Joueur *j)
@@ -232,10 +241,7 @@ public:
     {
         return "Paysan";
     }
-    static int getCout()
-    {
-        return m_cout;
-    }
+
 };
 
 #endif // PION_HPP

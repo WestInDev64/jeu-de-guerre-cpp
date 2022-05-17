@@ -28,6 +28,7 @@ protected:
 
     vector<Case *> vecCasesJoueur1;
     vector<Case *> vecCasesJoueur2;
+    vector<Case*> vecCasesAdjacentes; 
     
     // vector<Case*> vecCasesJ1;
 
@@ -45,7 +46,7 @@ public:
     void choixPion(vector<Case *> vecCases);
 
 
-    vector<Case*> vecCasesAjacentes(int x, int y);
+    void vecCasesAjacentes(int x, int y , vector<Case*> & vec);
 
     /**
      * TODO: Méthode estGameOver()
@@ -83,6 +84,7 @@ public:
     Joueur *getJoueur2() const;
     Case *selectionPion(int num, vector<Case *> vecCases) const;
     void transformerEnChateau(int x, int y);
+    void marqueCasesAdj();
     /* mutateurs */
     void setCase(Pion *p, int x, int y);
 };

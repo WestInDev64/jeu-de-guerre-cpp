@@ -1,4 +1,5 @@
 #include "Plateau.hpp"
+#include <cstring>
 
 /**
  * Méthode qui retourne un char en fonction de notre enum
@@ -69,6 +70,7 @@ Plateau::Plateau(int nbx, int nby)
 {
     m_lig = nbx;
     m_col = nby;
+    m_taille = nbx * nby;
     tabCase = new Case **[m_lig];
     for (int x = 0; x < m_lig; x++)
     {
@@ -77,6 +79,8 @@ Plateau::Plateau(int nbx, int nby)
         {
             /* init du constr de Case dans chaque cellule */
             tabCase[x][y] = new Case(x, y);
+            Pion * p = new Pion();
+            tabCase[x][y]->setPion(p);
         }
     }
 }
@@ -98,14 +102,15 @@ void Plateau::affiche()
     for (int i = 0; i < m_lig; i++)
     {
         cout << "     +---+---+---+---+---+---+---+---+---+---+" << endl;
-        cout << setw(3) << enumToChar(i) << "  |";
+        cout << setfill(' ') << setw(3) << enumToChar(i) << "  |";
         // cout << "  +---+---+---+---+---+---+---+---+---+---+" << endl;
         for (int j = 0; j < m_col; j++)
         {
-            if (strlen(tabCase[i][j]->getPion()->getRef()) == 2)
-                cout << tabCase[i][j]->getPion()->getRef() << " |";
-            else
-                cout << "   |";
+            /* IL FAUT AUTRE CHOSE QUE STRLEN  oui
+            Pourquoi 8 tt a l'heure ? ah bah si le pointeur
+            */
+            /* ICI */
+            cout << setfill(' ') << setw(3) << tabCase[i][j]->getPion()->getRef() << "|";
         }
         cout << endl;
     }
@@ -117,4 +122,9 @@ void Plateau::affiche()
 int Plateau::getNbCol() const
 {
     return m_col;
+}
+
+int Plateau::getTaille() const 
+{
+    return m_taille;
 }

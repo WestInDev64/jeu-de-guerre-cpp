@@ -10,15 +10,15 @@ class Joueur
     string m_name;
     int m_qteOr;
     bool m_tour;
-    char m_couleur;
+    string m_couleur;
     int m_nbChateau;
 
 public:
     Joueur();
-    Joueur(string const& name, char const& color);
+    Joueur(string const& name, string const& color);
 
     /* Accesseurs */
-    char getCouleur() const;
+    string getCouleur() const;
     string getNom() const;
     int getOr() const;
     int getNbChateau() const;
@@ -30,4 +30,4 @@ public:
 };
 
 
-#endif // JOUEUR_HPPPP
+#endif // JOUEUR_HPP
