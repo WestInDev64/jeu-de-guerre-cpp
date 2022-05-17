@@ -205,42 +205,5 @@ public:
 
 };
 
-class Paysan : public Pion
-{
-private:
-    bool m_seDeplace = false;
-
-public:
-    Paysan(Joueur *j) : Pion(j)
-    {
-        m_pow = 0;
-        m_pdv = 1;
-        m_pdm = 2;
-        m_prod = 5;
-        m_cout = 20;
-        m_ref = "P" + j->getCouleur();
-        m_joueur = j;
-    }
-    void produireOrS(Joueur *j)
-    {
-        j->setOr(m_prod);
-    }
-
-    bool getSeDeplace()
-    {
-        return m_seDeplace;
-    }
-
-    void s_estDeplacer()
-    {
-        m_seDeplace = true;
-    }
-
-    string affichetype()
-    {
-        return "Paysan";
-    }
-
-};
 
 #endif // PION_HPP

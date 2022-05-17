@@ -1,6 +1,7 @@
 #include "Chateau.hpp"
 #include <iostream>
 #include "functions.hpp"
+#include "Paysan.hpp"
 
 /* Méthodes */
 Chateau::Chateau(Joueur *j) : Pion(j)

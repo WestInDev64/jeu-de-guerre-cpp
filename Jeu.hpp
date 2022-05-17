@@ -9,6 +9,7 @@
 #include <string>
 #include <vector>
 #include "functions.hpp"
+#include "Paysan.hpp"
 
 using namespace std;
 
