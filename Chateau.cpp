@@ -40,23 +40,22 @@ void Chateau::construirePion(int i)
         if (this->m_joueur->getOr() >= 10)
             p = new Seigneur(this->m_joueur);
         else
-            cout << "Recrutement impossible, il vous faut : " << dynamic_cast<Seigneur *>(p)->getCout() << " d'or !" << endl;
+            cout << "Recrutement impossible, il vous faut : " << dynamic_cast<Seigneur *>(this)->getCout() << " d'or !" << endl;
         break;
     case 2:
         if (this->m_joueur->getOr() >= 10)
             p = new Guerrier(this->m_joueur);
         else
-            cout << "Recrutement impossible, il vous faut : " << dynamic_cast<Guerrier *>(p)->getCout() << " d'or !" << endl;
+            cout << "Recrutement impossible, il vous faut : " << dynamic_cast<Guerrier *>(this)->getCout() << " d'or !" << endl;
         break;
     case 3:
         if (this->m_joueur->getOr() >= 20)
             p = new Paysan(this->m_joueur);
         else
-            cout << "Recrutement impossible, il vous faut : " << dynamic_cast<Paysan *>(p)->getCout() << " d'or !" << endl;
+            cout << "Recrutement impossible, il vous faut : " << dynamic_cast<Paysan *>(this)->getCout() << " d'or !" << endl;
         break;
     }
     this->m_action = true;
-    delete p;
 }
 
 string Chateau::affichetype()
