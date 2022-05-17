@@ -24,7 +24,8 @@ public:
     int getNbChateau() const;
 
     /* Mutateurs */
-    void setOr(int o);
+    void ajouterOr(int o);
+    void enleverOr(int o);
     void setNbChateau();
     void taxeDesChateaux();
 };

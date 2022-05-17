@@ -17,9 +17,9 @@ Paysan::Paysan(Joueur *j, int x, int y) : Pion(j,x,y)
     m_ref = "P" + j->getCouleur();
     m_joueur = j;
 }
-void Paysan::produireOrS(Joueur *j)
+void Paysan::produireOrS()
 {
-    j->setOr(m_prod);
+    m_joueur->ajouterOr(m_prod);
 }
 
 bool Paysan::getSeDeplace()

@@ -10,7 +10,7 @@ private:
 
 public:
     Paysan(Joueur *j, int x, int y);
-    void produireOrS(Joueur *j);
+    void produireOrS();
     bool getSeDeplace();
     void s_estDeplacer();
     string affichetype();

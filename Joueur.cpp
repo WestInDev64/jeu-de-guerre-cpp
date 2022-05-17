@@ -46,10 +46,14 @@ int Joueur::getNbChateau() const
  *                      Mutateurs                       *
  ********************************************************/
 
-void Joueur::setOr(int o)
+void Joueur::ajouterOr(int o)
 {
 
     m_qteOr += o;
+}
+
+void Joueur::enleverOr(int o) {
+    m_qteOr -= o;
 }
 
 void Joueur::setNbChateau()
