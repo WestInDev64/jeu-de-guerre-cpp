@@ -15,8 +15,8 @@ public:
     void s_estDeplacer();
     string affichetype();
     void afficheActions();
-
-
+    void selectActions();
+    void mvtPossible(vector<Case *> &vecCases);
 };
 
 #endif // PAYSAN_HPP
