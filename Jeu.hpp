@@ -23,11 +23,16 @@ protected:
     int m_tourJ1;
     int etatTourPhase1;
     int etatTourPhase2;
+
+    /* Voir TODO */
     bool gameOver; // false durant toute la partie pour afficher un message
     bool victoire; // pareil oui
 
+
     vector<Case *> vecCasesJoueur1;
     vector<Case *> vecCasesJoueur2;
+    
+    /* A vérifier si possibilité de comparer avec m_plateau  */
     vector<Case*> vecCasesAdjacentes; 
     
     // vector<Case*> vecCasesJ1;
@@ -37,6 +42,10 @@ public:
     void Init();
     void Start();
     void initPlateau();
+    /**
+     * TODO: A faire
+     */
+    void Quitter();
 
     /* Affichage & Menus */
     void InterfaceJoueur();
@@ -50,13 +59,14 @@ public:
 
     /**
      * TODO: Méthode estGameOver()
-     * nbChateau = 0
+     * nbChateau = 0 puis bool vrai ou false
      * TODO: Méthode estVainqueur()
-     * détruire les chateaux adv
+     * détruire les chateaux adv idem 
      * ya pas d'autre conditions de victoires ?
      * ok on peut en rajouter
      * 20 TOURS == ok comptabilité
      * TODO: Seigneur Transforme en chateau()
+     * ? Verifier qu'elle fonctionne 
      * il faut peut se tranformer dans Seigneur
      * si assez d'or tout simplement == 1 action du seigneur
      *
