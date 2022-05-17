@@ -188,14 +188,19 @@ public:
     }
 
     /* Un Seigneur peut se Transformer si le joueur à assez d'or */
-    bool peutSeTransformer(Joueur *j)
+    bool peutSeTransformer()
     {
-        if (j->getOr() >= 15)
+        if (m_joueur->getOr() >= 15)
         {
             return true;
         }
         return false;
     }
+
+    void payerChateau() {
+        this->getM_Joueur()->enleverOr(dynamic_cast<Chateau*>(this)->getCout());
+    }
+
 
     void attaque(Pion *p)
     {

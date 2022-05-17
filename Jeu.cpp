@@ -333,6 +333,16 @@ void Jeu::transformerEnChateau(int x, int y)
     /* Recupere le pion en x, y */
     Pion *p = m_plateau->getTabCase()[x][y]->getPion();
 
+    if (dynamic_cast<Seigneur*>(p)->peutSeTransformer())
+    {
+        cout << "Vous avez payer " << dynamic_cast<Seigneur*>(p)->getCout() << " d'or pour construire un chateau !" << endl;
+        dynamic_cast<Seigneur*>(p)->payerChateau();
+    } else {
+        cout << "Vous n'avez pas assez d'or pour construire un chateau !"<< endl;
+        return;
+    }
+    
+
     /* Création d'un chateau */
     Chateau *c = new Chateau(p->getM_Joueur(),x,y);
 
