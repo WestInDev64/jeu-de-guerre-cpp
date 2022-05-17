@@ -31,13 +31,13 @@ protected:
 
 public:
     Pion(){
-        m_ref = " . ";
+        m_ref = " ";
     };
 
     Pion(Joueur *j)
     {
         m_joueur = j;
-        m_ref = " . ";
+        m_ref = " " + j->getCouleur() ;
     }
 
     virtual ~Pion()
@@ -71,10 +71,9 @@ public:
         return "Pion";
     }
 
-    void afficheActions()
-    {
-    }
+    virtual void afficheActions(){}
 
+    virtual void selectActions(){}
     /**
      * Peut servir dans le cas ou un chateau recrute un Pion,
      * Et que ce Pion qui vient d'être créer ne pourra faire ses actions que le prochain tour

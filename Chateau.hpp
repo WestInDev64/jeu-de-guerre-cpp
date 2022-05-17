@@ -26,6 +26,7 @@ public:
     string affichetype();
     void afficheActions();
     void afficheRecruter();
+    void selectActions();
 };
 
 #endif //CHATEAU_HPP

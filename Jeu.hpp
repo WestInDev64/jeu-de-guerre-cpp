@@ -8,10 +8,9 @@
 #include "Chateau.hpp"
 #include <string>
 #include <vector>
+#include "functions.hpp"
 
 using namespace std;
-
-inline int choixMenu();
 
 class Jeu
 {
@@ -20,7 +19,8 @@ protected:
     Joueur *m_j1;
     Joueur *m_j2;
 
-    int m_tourJ1;
+    int m_tourJ; // 0 = J1  1 = J2
+    int m_nb_tour;
     int etatTourPhase1;
     int etatTourPhase2;
 
@@ -50,9 +50,11 @@ public:
     /* Affichage & Menus */
     void InterfaceJoueur();
     void afficheMenuTour();
-    void afficheSelectionPion(vector<Case *> vecCases);
-    void selectionMenu(vector<Case *> vecCases);
-    void choixPion(vector<Case *> vecCases);
+    void affichePion(vector<Case *> &vecCases);
+
+    /* Sélections Switch */
+    void selectionMenu(vector<Case *> &vecCases);
+    void selectPion(vector<Case *> &vecCases);
 
 
     void vecCasesAjacentes(int x, int y , vector<Case*> & vec);
@@ -94,9 +96,11 @@ public:
     Joueur *getJoueur2() const;
     Case *selectionPion(int num, vector<Case *> vecCases) const;
     void transformerEnChateau(int x, int y);
-    void marqueCasesAdj();
+    void marqueCasesAdj(vector<Case *> &vecCases);
+    int getNbTour() const;
     /* mutateurs */
     void setCase(Pion *p, int x, int y);
+    void setNbTour();
 };
 
 #endif // JEU_HPP
