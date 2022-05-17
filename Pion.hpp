@@ -97,6 +97,14 @@ public:
         m_action = false;
     }
 
+    int getX() {
+        return m_posx;
+    }
+
+    int getY() {
+        return m_posy;
+    }
+
 };
 
 class PionVide : public Pion
