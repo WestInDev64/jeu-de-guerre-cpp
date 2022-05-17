@@ -29,13 +29,12 @@ protected:
     bool gameOver; // false durant toute la partie pour afficher un message
     bool victoire; // pareil oui
 
-
     vector<Case *> vecCasesJoueur1;
     vector<Case *> vecCasesJoueur2;
-    
+
     /* A vérifier si possibilité de comparer avec m_plateau  */
-    vector<Case*> vecCasesAdjacentes; 
-    
+    vector<Case *> vecCasesAdjacentes;
+
     // vector<Case*> vecCasesJ1;
 
 public:
@@ -57,19 +56,32 @@ public:
     void selectionMenu(vector<Case *> &vecCases);
     void selectPion(vector<Case *> &vecCases);
 
+    void vecCasesAjacentes(int x, int y, vector<Case *> &vec);
 
-    void vecCasesAjacentes(int x, int y , vector<Case*> & vec);
-
+    void estGameOver()
+    {
+        if (m_j1->getNbChateau() < 1)
+        {
+            cout << m_j2->getNom() << " vous avez détruit le dernier chateau de " << m_j1->getNom() << ". Vous avez gagné !" << endl;
+        }
+        else
+        {
+            if (m_j2->getNbChateau() < 1)
+            {
+                cout << m_j1->getNom() << " vous avez détruit le dernier chateau de " << m_j2->getNom() << ". Vous avez gagné !" << endl;
+            }
+        }
+    }
     /**
      * TODO: Méthode estGameOver()
      * nbChateau = 0 puis bool vrai ou false
      * TODO: Méthode estVainqueur()
-     * détruire les chateaux adv idem 
+     * détruire les chateaux adv idem
      * ya pas d'autre conditions de victoires ?
      * ok on peut en rajouter
      * 20 TOURS == ok comptabilité
      * TODO: Seigneur Transforme en chateau()
-     * ? Verifier qu'elle fonctionne 
+     * ? Verifier qu'elle fonctionne
      * il faut peut se tranformer dans Seigneur
      * si assez d'or tout simplement == 1 action du seigneur
      *

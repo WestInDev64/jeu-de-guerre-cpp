@@ -37,11 +37,11 @@ string Paysan::affichetype()
 void Paysan::afficheActions()
 {
     cout << "SELECT: [ " << this->affichetype()
-         << " (" << enumToChar(this->m_posx)
-         << ", " << this->m_posy << ") ]" << endl;
+         << " (" << enumToChar(this->getX())
+         << ", " << this->getY() << ") ]" << endl;
     cout << endl
          << "# Menu action :" << endl;
-    cout << "   1 - Recruter un pion" << endl;
-    cout << "   2 - Ne fait rien" << endl;
+    cout << "   1 - Se Déplacer" << endl;
+    cout << "   2 - Amasser des ressources" << endl;
     cout << "   3 - Retour" << endl;
 }
