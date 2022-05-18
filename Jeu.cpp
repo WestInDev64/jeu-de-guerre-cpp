@@ -200,17 +200,21 @@ void Jeu::affichePion(vector<Case *> &vecCases)
         {
             cout << "   "
                  << (i + 1)
-                 << " (" << enumToChar(vecCases[i]->getX()) << ", " << vecCases[i]->getY() << ")"
-                 << vecCases[i]->getPion()->affichetype()
-                 << " " << vecCases[i]->getPion()->getRef()
-                 << " PV["
-                 << vecCases[i]->getPion()->getPdv()
-                 << "] - PM["
-                 << vecCases[i]->getPion()->getPdm()
-                 << "] - POW["
-                 << vecCases[i]->getPion()->getPow()
-                 << "]"
-                 << endl;
+                 << " (" << enumToChar(vecCases[i]->getX()) << ", " << vecCases[i]->getY() << ") <- "
+                 << vecCases[i]->getPion()->affichetype();
+            if (vecCases[i]->getPion()->getM_Joueur()->getCouleur() == "R")
+                cout << " Rouge";
+            if (vecCases[i]->getPion()->getM_Joueur()->getCouleur() == "B")
+                cout << " Bleu";
+            cout
+                << " | PV["
+                << vecCases[i]->getPion()->getPdv()
+                << "] - PDM["
+                << vecCases[i]->getPion()->getPdm()
+                << "] - POW["
+                << vecCases[i]->getPion()->getPow()
+                << "]"
+                << endl;
         }
     }
     cout << "   "
