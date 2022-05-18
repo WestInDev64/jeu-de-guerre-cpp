@@ -57,7 +57,7 @@ public:
     {
         if (this->m_pdv < 1)
         {
-            cout << "*Slurp* pion détruit !" << endl;
+            cout << "*Slurp* le pion a péri !" << endl;
             return true;
         }
         return false;
