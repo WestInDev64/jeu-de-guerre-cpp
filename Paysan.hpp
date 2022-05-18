@@ -2,6 +2,7 @@
 #define PAYSAN_HPP
 
 #include "Pion.hpp"
+#include "Case.hpp"
 
 class Paysan : public Pion
 {

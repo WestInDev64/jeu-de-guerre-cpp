@@ -3,7 +3,6 @@
 
 #include <string>
 #include "Joueur.hpp"
-#include "Chateau.hpp"
 
 using namespace std;
 
@@ -21,7 +20,7 @@ protected:
     int m_prod;
 
     /* 1 action par Pion (sauf pour le Guerrier qui peut se déplacer puis attaquer) */
-    bool m_action = false;
+    bool m_action = true;
 
     /* positions */
     int m_posx;
@@ -66,7 +65,7 @@ public:
 
     Joueur *getM_Joueur() { return m_joueur; }
 
-    int getCout() { return m_cout; }
+    int getCout() const { return m_cout; }
 
     void setPdv(int pdv)
     {
@@ -80,6 +79,17 @@ public:
     virtual void afficheActions() {}
 
     virtual void selectActions() {}
+
+    bool peutRecruter(int price)
+    {
+        if (m_joueur->getOr() >= price)
+        {
+            return true;
+        }
+        return false;
+    }
+
+    // void mvtPossible(vector<Case *> &vecCases){}
     /**
      * Peut servir dans le cas ou un chateau recrute un Pion,
      * Et que ce Pion qui vient d'être créer ne pourra faire ses actions que le prochain tour
@@ -135,7 +145,7 @@ private:
     bool m_seDeplace = false;
 
 public:
-    Guerrier(Joueur *j, int x, int y) : Pion(j,x,y)
+    Guerrier(Joueur *j, int x, int y) : Pion(j, x, y)
     {
         m_pow = 5;
         m_pdv = 10;
@@ -177,7 +187,7 @@ private:
     bool m_seDeplace = false;
 
 public:
-    Seigneur(Joueur *j, int x, int y) : Pion(j,x,y)
+    Seigneur(Joueur *j, int x, int y) : Pion(j, x, y)
     {
         m_pow = 3;
         m_pdv = 5;
@@ -198,10 +208,10 @@ public:
         return false;
     }
 
-    void payerChateau() {
-        m_joueur->enleverOr(dynamic_cast<Chateau*>(this)->getCout());
+    void payerChateau(Pion &p)
+    {
+        m_joueur->enleverOr(p.getCout());
     }
-
 
     void attaque(Pion *p)
     {

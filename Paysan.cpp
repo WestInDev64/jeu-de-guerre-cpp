@@ -51,15 +51,13 @@ void Paysan::afficheActions()
 
 void Paysan::mvtPossible(vector<Case *> &vecCases)
 {
-    cout << "Vous possédez " << vecCases.size() << " pions:" << endl;
+    cout << "Déplacements possibles: " << vecCases.size() << " positions: " << endl;
     for (int i = 0; i < (int)vecCases.size(); i++)
     {
         cout << "   "
              << (i + 1)
-             << " - Pion: "
-             << vecCases[i]->getPion()->affichetype()
-             << " " << vecCases[i]->getPion()->getRef()
-             << "(" << enumToChar(vecCases[i]->getX()) << ", " << vecCases[i]->getY() << ")" << endl;
+             << " - Case: "
+             << "(" << enumToChar(vecCases[i]->getX()) << "," << vecCases[i]->getY() << ")" << endl;
     }
     cout << "   "
          << ((int)vecCases.size() + 1)
@@ -77,7 +75,7 @@ void Paysan::selectActions()
         switch (choix)
         {
         case 1:
-            mvtPossible(m_joueur.getVec());
+            //mvtPossible();
             //construirePion(choixMenu());
             break;
         case 2:

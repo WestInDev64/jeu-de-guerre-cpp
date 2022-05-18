@@ -17,9 +17,6 @@ public:
     Case();
     Case(int x, int y);
     void setPion( Pion * p);
-    
-
-
 
     /* Accesseurs */
     Pion* getPion() const;
@@ -28,7 +25,5 @@ public:
     //void setCase(/* int etat, */ Pion *P);
     
 };
-
-
 
 #endif //CASE_HPPPP

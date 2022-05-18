@@ -2,6 +2,7 @@
 #include <iostream>
 #include "functions.hpp"
 #include "Paysan.hpp"
+#include <vector>
 
 /* Méthodes */
 Chateau::Chateau(Joueur *j, int x, int y) : Pion(j, x, y)
@@ -16,51 +17,21 @@ Chateau::Chateau(Joueur *j, int x, int y) : Pion(j, x, y)
     m_coutrect = {10, 10, 20};
 }
 
-/* Un chateau peut recruter si le joueur à assez d'or (minimum requis 10 d'or) */
-bool Chateau::peutRecruter(Joueur *j)
+int Chateau::getCout() const
 {
-    if (j->getOr() < 10)
-    {
-        return false;
-    }
-    return true;
+    return m_cout;
 }
 
-/**
- * Retourne un Pion dont le joueur veut construire
- *  Exemple : Le paramètre est P le Chateau recrute un Paysan;
- * !ERROR DESTRUCTEUR
- *
- * */
-void Chateau::construirePion(int i)
+/* Un chateau peut recruter si le joueur à assez d'or (minimum requis 10 d'or) */
+bool Chateau::peutRecruter(int price)
 {
-    Pion *p = nullptr;
-    switch (i)
+    if(m_joueur->getOr() >= price) 
     {
-    case 1:
-        if (this->m_joueur->getOr() >= 10)
-            cout << "Recrutement possible " << endl;
-        // p = new Seigneur(this->m_joueur);
-        else
-            cout << "Recrutement impossible, il vous faut : " << dynamic_cast<Seigneur *>(this)->getCout() << " d'or !" << endl;
-        break;
-    case 2:
-        if (this->m_joueur->getOr() >= 10)
-            cout << "Recrutement possible " << endl;
-        // p = new Guerrier(this->m_joueur);
-        else
-            cout << "Recrutement impossible, il vous faut : " << dynamic_cast<Guerrier *>(this)->getCout() << " d'or !" << endl;
-        break;
-    case 3:
-        if (this->m_joueur->getOr() >= 20)
-            cout << "Recrutement possible " << endl;
-        // p = new Paysan(this->m_joueur);
-        else
-            cout << "Recrutement impossible, il vous faut : " << dynamic_cast<Paysan *>(this)->getCout() << " d'or !" << endl;
-        break;
+        return true;
     }
-    this->m_action = true;
+    return false;
 }
+
 
 string Chateau::affichetype()
 {
@@ -89,27 +60,17 @@ void Chateau::afficheRecruter()
     cout << "   4 - Retour" << endl;
 }
 
-void Chateau::selectActions()
+void Chateau::empPossible(vector<Case *> &vecCases)
 {
-    int choix;
-    do
+    cout << "Emplacements possibles: " << vecCases.size() << " positions: " << endl;
+    for (int i = 0; i < (int)vecCases.size(); i++)
     {
-        choix = choixMenu();
-        cin.clear();
-        switch (choix)
-        {
-        case 1:
-            afficheRecruter();
-            construirePion(choixMenu());
-            break;
-        case 2:
-            break;
-        case 3:
-            cout << " ../Retour " << endl;
-            break;
-        default:
-            cout << "Erreur saisie ! ... " << endl;
-            break;
-        }
-    } while (choix != 3);
+        cout << "   "
+             << (i + 1)
+             << " - Case: "
+             << "(" << enumToChar(vecCases[i]->getX()) << "," << vecCases[i]->getY() << ")" << endl;
+    }
+    cout << "   "
+         << ((int)vecCases.size() + 1)
+         << " - Retour au menu précédent" << endl;
 }
