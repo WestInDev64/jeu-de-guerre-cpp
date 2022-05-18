@@ -197,7 +197,9 @@ void Jeu::affichePion(vector<Case *> &vecCases)
                  << " - Pion: "
                  << vecCases[i]->getPion()->affichetype()
                  << " " << vecCases[i]->getPion()->getRef()
-                 << "(" << enumToChar(vecCases[i]->getX()) << ", " << vecCases[i]->getY() << ")" << endl;
+                 << " Point de vie restant :"
+                 << vecCases[i]->getPion()->getPdv()
+                 << " (" << enumToChar(vecCases[i]->getX()) << ", " << vecCases[i]->getY() << ")" << endl;
         }
     }
     cout << "   "
@@ -297,7 +299,7 @@ void Jeu::selectPion(vector<Case *> &vecCases)
             this->getPlateau()->affiche();
             InterfaceJoueur();
             break;
-        case 'G': // ! GUERRIER (A FAIRE)
+        case 'G': // ! GUERRIER (FAIT)
             /*  affiche les actions du pion sélectionné*/
             caseCourante->getPion()->afficheActions();
             cout << "Selectionner une action: ";
@@ -364,7 +366,7 @@ void Jeu::switchActionsGuerrier(int choix, int x, int y)
         return;
     case 2: // ! attaquer sur le plateau
         /* Calcul des cases d'attaques possibles */
-        vecCasesAdjEnnemis(x,y,vecCasesAdj, vecCasesEnnemis);
+        vecCasesAdjEnnemis(x, y, vecCasesAdj, vecCasesEnnemis);
 
         /* Aperçu */
         this->getPlateau()->affiche();
@@ -379,12 +381,19 @@ void Jeu::switchActionsGuerrier(int choix, int x, int y)
         caseDest = selectionCase(choixG2, vecCasesEnnemis);
 
         dynamic_cast<Guerrier *>(caseCourante->getPion())->attaque(caseDest->getPion());
-       
+
         if (caseDest->getPion()->pionEstMort())
         {
             caseDest->setPion(new Pion(caseDest->getX(), caseDest->getY()));
-        }else {
-            cout << caseDest->getPion()->affichetype() << " a pris " << caseCourante->getPion()->getPow() << " de dégats !";
+        }
+        else
+        {
+            cout << caseDest->getPion()->affichetype()
+                 << " "
+                 << caseDest->getPion()->getM_Joueur()->getCouleur()
+                 << " a pris "
+                 << caseCourante->getPion()->getPow()
+                 << " de dégats !" << endl;
         }
 
         caseCourante->getPion()->setAction(false);
@@ -441,7 +450,7 @@ void Jeu::switchActionsPaysan(int choix, int x, int y)
         /* Produire de l'or */
         dynamic_cast<Paysan *>(caseCourante->getPion())->produireOrS();
         caseCourante->getPion()->setAction(false);
-        cout << "Votre paysan a récolté : " << caseCourante->getPion()->getProd() << "pièces d'Or" << endl;
+        cout << "Votre paysan a récolté : " << caseCourante->getPion()->getProd() << " pièces d'Or" << endl;
         return;
     case 3:
         cout << "Retour " << endl;
@@ -567,7 +576,7 @@ Case *Jeu::selectionCase(int num, vector<Case *> vecCases)
  * TODO: Mieux commenter
  * Renvoi un Vecteur de cases adjacentes à la case sélectionnée
  */
-void Jeu::vecCasesAdjEnnemis(int x, int y, vector<Case *> &vec, vector<Case *> &vecEnnemis )
+void Jeu::vecCasesAdjEnnemis(int x, int y, vector<Case *> &vec, vector<Case *> &vecEnnemis)
 {
     int nb_col = m_plateau->getNbCol();
     int posCase = x * nb_col + y; // 11
@@ -593,13 +602,10 @@ void Jeu::vecCasesAdjEnnemis(int x, int y, vector<Case *> &vec, vector<Case *> &
     vecEnnemis.clear();
     for (auto e : vec)
     {
-        if (e->getPion()->getRef() != " " && e->getPion()->getRef() != " + " 
-        && m_plateau->getTabCase()[x][y]->getPion()->getM_Joueur() != e->getPion()->getM_Joueur())
+        if (e->getPion()->getRef() != " " && e->getPion()->getRef() != " + " && m_plateau->getTabCase()[x][y]->getPion()->getM_Joueur() != e->getPion()->getM_Joueur())
             vecEnnemis.push_back(e);
     }
-
 }
-
 
 /**
  * TODO: Mieux commenter
@@ -687,8 +693,6 @@ void Jeu::updateCasesJoueurs(vector<Case *> &vecCases, Joueur *joueur)
     }
 }
 
-
-
 /**
  * TODO: A Commenter !!!
  * Déplacement Paysan
@@ -749,20 +753,19 @@ void Jeu::vecCasesDeplacement2(int x, int y, vector<Case *> &vecADJ, vector<Case
     }
 }
 
-
 /**
  * TODO: A Commenter !!!
  * Déplacement Paysan
  */
 void Jeu::vecCasesDeplacement3(int x, int y, vector<Case *> &vecADJ, vector<Case *> &vecDPL)
 {
-    vecCasesDeplacement1(x,y,vecADJ,vecDPL);
+    vecCasesDeplacement1(x, y, vecADJ, vecDPL);
     int size = vecDPL.size();
     for (int i = 0; i < size; i++)
     {
         vecCasesAdjacentes(vecDPL[i]->getX(), vecDPL[i]->getY(), vecADJ);
     }
-    vecCasesDeplacement1(x,y,vecADJ,vecDPL);
+    vecCasesDeplacement1(x, y, vecADJ, vecDPL);
 
     int size2 = vecDPL.size();
 
@@ -770,10 +773,8 @@ void Jeu::vecCasesDeplacement3(int x, int y, vector<Case *> &vecADJ, vector<Case
     {
         vecCasesAdjacentes(vecDPL[i]->getX(), vecDPL[i]->getY(), vecADJ);
     }
-    vecCasesDeplacement1(x,y,vecADJ,vecDPL);
+    vecCasesDeplacement1(x, y, vecADJ, vecDPL);
 }
-
-
 
 void Jeu::estGameOver()
 {
