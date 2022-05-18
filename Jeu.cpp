@@ -200,12 +200,17 @@ void Jeu::affichePion(vector<Case *> &vecCases)
         {
             cout << "   "
                  << (i + 1)
-                 << " - Pion: "
+                 << " (" << enumToChar(vecCases[i]->getX()) << ", " << vecCases[i]->getY() << ")"
                  << vecCases[i]->getPion()->affichetype()
                  << " " << vecCases[i]->getPion()->getRef()
-                 << " Point de vie restant :"
+                 << " PV["
                  << vecCases[i]->getPion()->getPdv()
-                 << " (" << enumToChar(vecCases[i]->getX()) << ", " << vecCases[i]->getY() << ")" << endl;
+                 << "] - PM["
+                 << vecCases[i]->getPion()->getPdm()
+                 << "] - POW["
+                 << vecCases[i]->getPion()->getPow()
+                 << "]"
+                 << endl;
         }
     }
     cout << "   "
@@ -357,7 +362,8 @@ void Jeu::switchActionsGuerrier(int choix, int x, int y)
         /* Choix de la case de destination */
         int choixG1;
         choixG1 = choixCase(vecCasesMvts);
-        if(choixG1 >= (int)vecCasesMvts.size() || choixG1 == -1){
+        if (choixG1 >= (int)vecCasesMvts.size() || choixG1 == -1)
+        {
             break;
         }
 
@@ -387,7 +393,8 @@ void Jeu::switchActionsGuerrier(int choix, int x, int y)
         /* Choix de la case de destination */
         int choixG2;
         choixG2 = choixCase(vecCasesEnnemis);
-        if(choixG2 >= (int)vecCasesMvts.size() || choixG2 == -1){
+        if (choixG2 >= (int)vecCasesMvts.size() || choixG2 == -1)
+        {
             break;
         }
         /* Sélection des cases d'attaques */
@@ -410,7 +417,7 @@ void Jeu::switchActionsGuerrier(int choix, int x, int y)
         }
 
         caseCourante->getPion()->setAction(false);
-                /* Remplacer l'ancienne case par la nouvelle dans vecCasesJoueurs */
+        /* Remplacer l'ancienne case par la nouvelle dans vecCasesJoueurs */
         updateCasesJoueurs(vecCasesJoueur1, m_j1);
         updateCasesJoueurs(vecCasesJoueur2, m_j2);
         break;
@@ -447,7 +454,8 @@ void Jeu::switchActionsSeigneur(int choix, int x, int y)
         /* Choix de la case de destination */
         int choixS1;
         choixS1 = choixCase(vecCasesMvts);
-        if(choixS1 >= (int)vecCasesMvts.size() || choixS1 == -1){
+        if (choixS1 >= (int)vecCasesMvts.size() || choixS1 == -1)
+        {
             break;
         }
 
@@ -480,7 +488,8 @@ void Jeu::switchActionsSeigneur(int choix, int x, int y)
         /* Choix de la case de destination */
         int choixS2;
         choixS2 = choixCase(vecCasesEnnemis);
-        if(choixS2 >= (int)vecCasesEnnemis.size() || choixS2 == -1){
+        if (choixS2 >= (int)vecCasesEnnemis.size() || choixS2 == -1)
+        {
             break;
         }
 
@@ -561,7 +570,8 @@ void Jeu::switchActionsPaysan(int choix, int x, int y)
         /* Choix de la case de destination */
         int choixP2;
         choixP2 = choixCase(vecCasesMvts);
-        if(choixP2 >= (int)vecCasesMvts.size() || choixP2 == -1){
+        if (choixP2 >= (int)vecCasesMvts.size() || choixP2 == -1)
+        {
             break;
         }
 
@@ -613,7 +623,8 @@ void Jeu::switchActionsChateau(int choix, int x, int y)
         /* Choix de l'emplacement de recrutement */
         int choixC3;
         choixC3 = choixCase(vecCasesMvts);
-        if(choixC3 >= (int)vecCasesMvts.size() || choixC3 == -1){
+        if (choixC3 >= (int)vecCasesMvts.size() || choixC3 == -1)
+        {
             break;
         }
         /* Sélection de la case et la retourne */
