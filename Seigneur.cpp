@@ -6,7 +6,7 @@
 
 Seigneur::Seigneur(Joueur *j, int x, int y) : Pion(j, x, y)
 {
-    m_pow = 30;
+    m_pow = 3;
     m_pdv = 5;
     m_pdm = 1;
     m_prod = 0;

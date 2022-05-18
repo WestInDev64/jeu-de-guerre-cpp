@@ -3,6 +3,7 @@
 
 #include "Pion.hpp"
 #include "Case.hpp"
+#include <vector>
 
 
 

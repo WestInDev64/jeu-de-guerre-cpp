@@ -192,12 +192,25 @@ void Jeu::affichePion(vector<Case *> &vecCases)
         {
             cout << "   "
                  << (i + 1)
-                 << " - Pion: "
-                 << vecCases[i]->getPion()->affichetype()
-                 << " " << vecCases[i]->getPion()->getRef()
-                 << " Point de vie restant :"
-                 << vecCases[i]->getPion()->getPdv()
-                 << " (" << enumToChar(vecCases[i]->getX()) << ", " << vecCases[i]->getY() << ")" << endl;
+                 << " (" 
+                 << enumToChar(vecCases[i]->getX()) 
+                 << ", " 
+                 << vecCases[i]->getY() 
+                 << ") "
+                 << setfill(' ') << setw(10) << vecCases[i]->getPion()->affichetype();
+            if (vecCases[i]->getPion()->getM_Joueur()->getCouleur() == "R")
+                cout << " Rouge";
+            if (vecCases[i]->getPion()->getM_Joueur()->getCouleur() == "B")
+                cout << " Bleu";
+            cout
+                << " | PV "
+                << setfill(' ') << setw(2) << vecCases[i]->getPion()->getPdv()
+                << " . PDM "
+                << setfill(' ') << setw(2) << vecCases[i]->getPion()->getPdm()
+                << " . POW "
+                << setfill(' ') << setw(2) << vecCases[i]->getPion()->getPow()
+                << " |" 
+                << endl;
         }
     }
     cout << "   "
@@ -392,6 +405,11 @@ void Jeu::switchActionsGuerrier(int choix, int x, int y)
 
         if (caseDest->getPion()->pionEstMort())
         {
+            /* CHECK SI LE PION MORT EST UN CHATEAU */
+            if (caseDest->getPion()->getRef()[0] == 'C')
+            {
+                caseDest->getPion()->getM_Joueur()->destructChateau();
+            }
             caseDest->setPion(new Pion(caseDest->getX(), caseDest->getY()));
         }
         else
@@ -431,7 +449,10 @@ void Jeu::switchActionsSeigneur(int choix, int x, int y)
             break;
         }
         /* Calcul des déplacements possible */
-        vecCasesDeplacement5(x, y, vecCasesAdj, vecCasesMvts);
+        vecCasesDeplacement1(x, y, vecCasesAdj, vecCasesMvts);
+
+        /* CHEATCODE DEPLACEMENT */
+        //vecCasesDeplacement5(x, y, vecCasesAdj, vecCasesMvts);
 
         /* Aperçu */
         this->getPlateau()->affiche();
@@ -490,6 +511,11 @@ void Jeu::switchActionsSeigneur(int choix, int x, int y)
         /* si le pion est mort */
         if (caseDest->getPion()->pionEstMort())
         {
+            /* CHECK SI LE PION MORT EST UN CHATEAU */
+            if (caseDest->getPion()->getRef()[0] == 'C')
+            {
+                caseDest->getPion()->getM_Joueur()->destructChateau();
+            }
             caseDest->setPion(new Pion(caseDest->getX(), caseDest->getY()));
             // cout << caseDest->getPion()->getM_Joueur()->getNom() << endl;
         }
@@ -924,7 +950,8 @@ void Jeu::estGameOver()
         cout << m_j2->getNom()
              << " vous avez détruit le dernier chateau de "
              << m_j1->getNom() << ". Vous avez gagné !" << endl;
-        etatTourClassique = 0;
+        InterfaceJoueur();
+        exit(1);
     }
     else
     {
@@ -933,7 +960,8 @@ void Jeu::estGameOver()
             cout << m_j1->getNom()
                  << " vous avez détruit le dernier chateau de "
                  << m_j2->getNom() << ". Vous avez gagné !" << endl;
-            etatTourClassique = 0;
+        InterfaceJoueur();
+        exit(1);
         }
     }
 }

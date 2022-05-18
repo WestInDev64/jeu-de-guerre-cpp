@@ -27,6 +27,7 @@ public:
     void ajouterOr(int o);
     void enleverOr(int o);
     void setNbChateau();
+    void destructChateau();
     void taxeDesChateaux();
     
 };

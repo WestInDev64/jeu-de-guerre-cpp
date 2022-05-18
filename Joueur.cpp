@@ -61,6 +61,10 @@ void Joueur::setNbChateau()
     m_nbChateau += 1;
 }
 
+void Joueur::destructChateau(){
+    m_nbChateau -=1;
+}
+
 /* Les chateaux rapportent de l'or au début du tour d'un joueur */
 void Joueur::taxeDesChateaux() {
     m_qteOr += m_nbChateau * 2;
