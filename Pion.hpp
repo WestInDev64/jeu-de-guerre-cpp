@@ -3,6 +3,8 @@
 
 #include <string>
 #include "Joueur.hpp"
+#include <iostream>
+
 
 using namespace std;
 
@@ -32,6 +34,7 @@ protected:
 public:
     Pion(int x, int y)
     {
+        m_joueur = nullptr;
         m_ref = " ";
         m_posx = x;
         m_posy = y;
@@ -60,20 +63,7 @@ public:
         return false;
     }
 
-    void attaquePossible(vector<Case *> &vecCases)
-    {
-        cout << "Attaques possibles: " << vecCases.size() << " positions: " << endl;
-        for (int i = 0; i < (int)vecCases.size(); i++)
-        {
-            cout << "   "
-                 << (i + 1)
-                 << " - Case: "
-                 << "(" << enumToChar(vecCases[i]->getX()) << "," << vecCases[i]->getY() << ")" << endl;
-        }
-        cout << "   "
-             << ((int)vecCases.size() + 1)
-             << " - Retour au menu précédent" << endl;
-    }
+    
 
     // virtual std::string affichePion() = 0;
 
@@ -165,48 +155,7 @@ public:
     }
 };
 
-class Guerrier : public Pion
-{
-private:
-    /* Pour que le Guerrier puisse se déplacer puis attaquer */
-    bool m_seDeplace = false;
 
-public:
-    Guerrier(Joueur *j, int x, int y) : Pion(j, x, y)
-    {
-        m_pow = 5;
-        m_pdv = 10;
-        m_pdm = 3;
-        m_prod = 0;
-        m_cout = 10;
-        m_ref = "G" + j->getCouleur();
-        m_joueur = j;
-    }
-
-    void attaque(Pion *p)
-    {
-        p->setPdv(p->getPdv() - this->m_pow);
-    }
-
-    string affichetype()
-    {
-        return "Guerrier";
-    }
-
-    bool getSeDeplace()
-    {
-        return m_seDeplace;
-    }
-
-    void s_estDeplacer()
-    {
-        m_seDeplace = true;
-    }
-    /*   static int getCout()
-      {
-          return m_cout;
-      } */
-};
 
 class Seigneur : public Pion
 {

@@ -10,6 +10,7 @@
 #include <vector>
 #include "functions.hpp"
 #include "Paysan.hpp"
+#include "Guerrier.hpp"
 
 using namespace std;
 
@@ -35,6 +36,7 @@ protected:
     vector<Case *> vecCasesAdj;
     vector<Case *> vecCasesMvts;
     vector<Case *> vecCasesActives;
+    vector<Case *> vecCasesEnnemis;
 
     // vector<Case*> vecCasesJ1;
 
@@ -58,10 +60,10 @@ public:
     void selectPion(vector<Case *> &vecCases);
 
     void vecCasesAdjacentes(int x, int y, vector<Case *> &vec);
-    void vecCasesAdjEnnemis(int x, int y, vector<Case *> &vec);
+    void vecCasesAdjEnnemis(int x, int y, vector<Case *> &vec, vector<Case *> &vecEnnemis );
     void vecCasesDeplacement1(int x, int y, vector<Case *> &vecADJ, vector<Case *> &vecDPL);
     void vecCasesDeplacement2(int x, int y, vector<Case *> &vecADJ, vector<Case *> &vecDPL);
-    void vecCasesEnnemis1(int x, int y, vector<Case *> &vecADJ, vector<Case *> &vecDPL);
+    void vecCasesDeplacement3(int x, int y, vector<Case *> &vecADJ, vector<Case *> &vecDPL);
     void updateCasesActives(vector<Case *> &vecCases);
     void updateCasesJoueurs(vector<Case *> &vecCases, Joueur *j);
 
