@@ -60,10 +60,7 @@ void Jeu::Init()
     m_tourJ = 0;
 }
 
-/**
- * TODO: Ajouter paramètres a l'init plateau nb_lig / nb_col
- * calculer l'emplacement de départ chateau + paysan automatiquement
- */
+// ! INITIALISATION DU PLATEAU
 void Jeu::initPlateau(int x, int y)
 {
     m_plateau = new Plateau(x, y);
@@ -85,10 +82,11 @@ void Jeu::initPlateau(int x, int y)
     m_j2->setNbChateau();
 }
 
+// ! START TOUR PAR TOUR
 void Jeu::Start()
 {
-    etatTourPhase1 = 1; // sans taxe chateaux
-    etatTourPhase2 = 1; // avec taxe chateaux
+    etatTourPhase1 = 1;    // sans taxe chateaux
+    etatTourClassique = 1; // avec taxe chateaux
     do
     {
         setNbTour();
@@ -139,15 +137,12 @@ void Jeu::Start()
         default:
             break;
         }
-    } while (etatTourPhase2);
+    } while (etatTourClassique);
 
     cout << "FIN DE PARTIE" << endl;
 }
 
-/**
- * Interface des 2 joueurs à chaque display
- * non le joueur voit en fonction de lui ses actions
- */
+// ! INTERFACE JOUEUR
 void Jeu::InterfaceJoueur()
 {
     int lig = 4;
@@ -186,10 +181,7 @@ void Jeu::InterfaceJoueur()
         cout << " > C'est au tour de : [ " << getJoueur2()->getNom() << " ] de jouer ..." << endl;
 }
 
-/**
- * TODO: Voir pour utiliser map pour menu
- * Conditions Pions Actions à TRUE
- */
+// ! AFFICHAGE PION
 void Jeu::affichePion(vector<Case *> &vecCases)
 {
     cout << endl;
@@ -212,7 +204,7 @@ void Jeu::affichePion(vector<Case *> &vecCases)
          << ((int)vecCases.size() + 1)
          << " - Retour au menu précédent" << endl;
 }
-
+// ! AFFICHAGE MENU
 void Jeu::afficheMenuTour()
 {
     cout << endl;
@@ -225,6 +217,7 @@ void Jeu::afficheMenuTour()
     cout << "   6 - Quitter la partie" << endl;
 }
 
+// ! SWITCH MENU PRINCIPAL
 void Jeu::selectionMenu(vector<Case *> &vecCases)
 {
     int choix = 0;
@@ -260,7 +253,7 @@ void Jeu::selectionMenu(vector<Case *> &vecCases)
         }
     } while ((choix != 6) && (choix != 2));
 }
-
+// ! SELECTION DES PIONS
 void Jeu::selectPion(vector<Case *> &vecCases)
 {
 
@@ -337,7 +330,7 @@ void Jeu::selectPion(vector<Case *> &vecCases)
     }
     return;
 }
-
+// ! SWITCH GUERRIER
 void Jeu::switchActionsGuerrier(int choix, int x, int y)
 {
     Case *caseDest;
@@ -357,7 +350,8 @@ void Jeu::switchActionsGuerrier(int choix, int x, int y)
         /* Choix de la case de destination */
         int choixG1;
         choixG1 = choixCase(vecCasesMvts);
-        if(choixG1 >= (int)vecCasesMvts.size() || choixG1 == -1){
+        if (choixG1 >= (int)vecCasesMvts.size() || choixG1 == -1)
+        {
             break;
         }
 
@@ -374,7 +368,7 @@ void Jeu::switchActionsGuerrier(int choix, int x, int y)
         updateCasesJoueurs(vecCasesJoueur1, m_j1);
         updateCasesJoueurs(vecCasesJoueur2, m_j2);
         return;
-    case 2: // ! attaquer sur le plateau
+    case 2: // ! ATTAQUE DU GUERRIER
         /* Calcul des cases d'attaques possibles */
         vecCasesAdjEnnemis(x, y, vecCasesAdj, vecCasesEnnemis);
 
@@ -387,7 +381,8 @@ void Jeu::switchActionsGuerrier(int choix, int x, int y)
         /* Choix de la case de destination */
         int choixG2;
         choixG2 = choixCase(vecCasesEnnemis);
-        if(choixG2 >= (int)vecCasesMvts.size() || choixG2 == -1){
+        if (choixG2 >= (int)vecCasesMvts.size() || choixG2 == -1)
+        {
             break;
         }
         /* Sélection des cases d'attaques */
@@ -410,7 +405,8 @@ void Jeu::switchActionsGuerrier(int choix, int x, int y)
         }
 
         caseCourante->getPion()->setAction(false);
-                /* Remplacer l'ancienne case par la nouvelle dans vecCasesJoueurs */
+        estGameOver();
+        /* Remplacer l'ancienne case par la nouvelle dans vecCasesJoueurs */
         updateCasesJoueurs(vecCasesJoueur1, m_j1);
         updateCasesJoueurs(vecCasesJoueur2, m_j2);
         break;
@@ -421,7 +417,6 @@ void Jeu::switchActionsGuerrier(int choix, int x, int y)
         break;
     }
 }
-
 // ! SWITCH SEIGNEUR
 void Jeu::switchActionsSeigneur(int choix, int x, int y)
 {
@@ -447,7 +442,8 @@ void Jeu::switchActionsSeigneur(int choix, int x, int y)
         /* Choix de la case de destination */
         int choixS1;
         choixS1 = choixCase(vecCasesMvts);
-        if(choixS1 >= (int)vecCasesMvts.size() || choixS1 == -1){
+        if (choixS1 >= (int)vecCasesMvts.size() || choixS1 == -1)
+        {
             break;
         }
 
@@ -480,7 +476,8 @@ void Jeu::switchActionsSeigneur(int choix, int x, int y)
         /* Choix de la case de destination */
         int choixS2;
         choixS2 = choixCase(vecCasesEnnemis);
-        if(choixS2 >= (int)vecCasesEnnemis.size() || choixS2 == -1){
+        if (choixS2 >= (int)vecCasesEnnemis.size() || choixS2 == -1)
+        {
             break;
         }
 
@@ -509,6 +506,8 @@ void Jeu::switchActionsSeigneur(int choix, int x, int y)
 
         /* Action du seigneur à false */
         caseCourante->getPion()->setAction(false);
+
+        estGameOver();
 
         updateCasesJoueurs(vecCasesJoueur1, m_j1);
         updateCasesJoueurs(vecCasesJoueur2, m_j2);
@@ -541,7 +540,7 @@ void Jeu::switchActionsSeigneur(int choix, int x, int y)
         break;
     }
 }
-
+// ! SWITCH PAYSAN
 void Jeu::switchActionsPaysan(int choix, int x, int y)
 {
     Case *caseDest;
@@ -561,7 +560,8 @@ void Jeu::switchActionsPaysan(int choix, int x, int y)
         /* Choix de la case de destination */
         int choixP2;
         choixP2 = choixCase(vecCasesMvts);
-        if(choixP2 >= (int)vecCasesMvts.size() || choixP2 == -1){
+        if (choixP2 >= (int)vecCasesMvts.size() || choixP2 == -1)
+        {
             break;
         }
 
@@ -591,7 +591,7 @@ void Jeu::switchActionsPaysan(int choix, int x, int y)
         break;
     }
 }
-
+// ! SWITCH CHATEAU
 void Jeu::switchActionsChateau(int choix, int x, int y)
 {
     Case *caseDest;
@@ -613,7 +613,8 @@ void Jeu::switchActionsChateau(int choix, int x, int y)
         /* Choix de l'emplacement de recrutement */
         int choixC3;
         choixC3 = choixCase(vecCasesMvts);
-        if(choixC3 >= (int)vecCasesMvts.size() || choixC3 == -1){
+        if (choixC3 >= (int)vecCasesMvts.size() || choixC3 == -1)
+        {
             break;
         }
         /* Sélection de la case et la retourne */
@@ -682,7 +683,6 @@ void Jeu::switchActionsChateau(int choix, int x, int y)
     }
 }
 
-/* Fonctions tests */
 Case *Jeu::selectionPion(int num, vector<Case *> vecCases) const
 {
     if (num > (int)vecCases.size() && (int)vecCases.size() == 0)
@@ -690,7 +690,6 @@ Case *Jeu::selectionPion(int num, vector<Case *> vecCases) const
     return vecCases[num];
 }
 
-/* Fonctions tests */
 Case *Jeu::selectionCase(int num, vector<Case *> vecCases)
 {
     if (num > (int)vecCases.size() && (int)vecCases.size() == 0)
@@ -822,8 +821,7 @@ void Jeu::updateCasesJoueurs(vector<Case *> &vecCases, Joueur *joueur)
 }
 
 /**
- * TODO: A Commenter !!!
- * Déplacement Paysan
+ * ! DEPLACEMENTS CHECKING
  */
 void Jeu::vecCasesDeplacement1(int x, int y, vector<Case *> &vecADJ, vector<Case *> &vecDPL)
 {
@@ -918,17 +916,24 @@ void Jeu::vecCasesDeplacement5(int x, int y, vector<Case *> &vecADJ, vector<Case
     vecCasesDeplacement1(x, y, vecADJ, vecDPL);
 }
 
+// ! EST GAME OVER
 void Jeu::estGameOver()
 {
     if (m_j1->getNbChateau() < 1)
     {
-        cout << m_j2->getNom() << " vous avez détruit le dernier chateau de " << m_j1->getNom() << ". Vous avez gagné !" << endl;
+        cout << m_j2->getNom()
+             << " vous avez détruit le dernier chateau de "
+             << m_j1->getNom() << ". Vous avez gagné !" << endl;
+        etatTourClassique = 0;
     }
     else
     {
         if (m_j2->getNbChateau() < 1)
         {
-            cout << m_j1->getNom() << " vous avez détruit le dernier chateau de " << m_j2->getNom() << ". Vous avez gagné !" << endl;
+            cout << m_j1->getNom()
+                 << " vous avez détruit le dernier chateau de "
+                 << m_j2->getNom() << ". Vous avez gagné !" << endl;
+            etatTourClassique = 0;
         }
     }
 }
@@ -937,25 +942,13 @@ void Jeu::estGameOver()
  *                      Accesseurs                      *
  ********************************************************/
 
-Plateau *Jeu::getPlateau() const
-{
-    return m_plateau;
-}
+Plateau *Jeu::getPlateau() const { return m_plateau; }
 
-Joueur *Jeu::getJoueur1() const
-{
-    return m_j1;
-}
+Joueur *Jeu::getJoueur1() const { return m_j1; }
 
-Joueur *Jeu::getJoueur2() const
-{
-    return m_j2;
-}
+Joueur *Jeu::getJoueur2() const { return m_j2; }
 
-int Jeu::getNbTour() const
-{
-    return m_nb_tour;
-}
+int Jeu::getNbTour() const { return m_nb_tour; }
 
 /********************************************************
  *                      Mutateurs                       *

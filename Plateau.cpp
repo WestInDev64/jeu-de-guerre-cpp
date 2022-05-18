@@ -40,13 +40,8 @@ void Plateau::affiche()
     {
         cout << "     +---+---+---+---+---+---+---+---+---+---+" << endl;
         cout << setfill(' ') << setw(3) << enumToChar(i) << "  |";
-        // cout << "  +---+---+---+---+---+---+---+---+---+---+" << endl;
         for (int j = 0; j < m_col; j++)
         {
-            /* IL FAUT AUTRE CHOSE QUE STRLEN  oui
-            Pourquoi 8 tt a l'heure ? ah bah si le pointeur
-            */
-            /* ICI */
             cout << setfill(' ') << setw(3) << tabCase[i][j]->getPion()->getRef() << "|";
         }
         cout << endl;

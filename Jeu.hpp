@@ -23,13 +23,12 @@ protected:
     Joueur *m_j2;
 
     int m_tourJ; // 0 = J1  1 = J2
-    int m_nb_tour;
-    int etatTourPhase1;
-    int etatTourPhase2;
+    int m_nb_tour; // Numero de Tour
+    int etatTourPhase1; // Tour Phase 1 sans taxe or Chateaux
+    int etatTourClassique; // Tour classique
 
     /* Voir TODO */
     bool gameOver; // false durant toute la partie pour afficher un message
-    bool victoire; // pareil oui
 
     vector<Case *> vecCasesJoueur1;
     vector<Case *> vecCasesJoueur2;
@@ -61,7 +60,7 @@ public:
     void selectPion(vector<Case *> &vecCases);
 
     void vecCasesAdjacentes(int x, int y, vector<Case *> &vec);
-    void vecCasesAdjEnnemis(int x, int y, vector<Case *> &vec, vector<Case *> &vecEnnemis );
+    void vecCasesAdjEnnemis(int x, int y, vector<Case *> &vec, vector<Case *> &vecEnnemis);
     void vecCasesDeplacement1(int x, int y, vector<Case *> &vecADJ, vector<Case *> &vecDPL);
     void vecCasesDeplacement2(int x, int y, vector<Case *> &vecADJ, vector<Case *> &vecDPL);
     void vecCasesDeplacement3(int x, int y, vector<Case *> &vecADJ, vector<Case *> &vecDPL);
@@ -87,18 +86,15 @@ public:
      * bah oui non 1 transformation = terminé
      * et bool du Chateau  a false
      * pareil pour Seigneur qui pop
-     * TODO: Guerrier( Déplacement *3 + Attaque )
-     * VecADJ = vecDPL 2
-     *
-     * TODO: Destruction des Pions lors Attaque
+     * * Guerrier( Déplacement *3 + Attaque )
      * subit des dégats
-     *
      * TODO: Etat des TOurs (résumés)
-     *  Utiliser MAP
-     *
+     * Dans un autre fichier LOG
      */
 
-    /* accesseurs */
+    /********************************************************
+     *                      Accesseurs                      *
+     ********************************************************/
     Plateau *getPlateau() const;
     Joueur *getJoueur1() const;
     Joueur *getJoueur2() const;
@@ -109,7 +105,9 @@ public:
     void marqueCasesAdjEnnemis(vector<Case *> &vec, int x, int y);
     void cleanCasesMvt(vector<Case *> &vec);
     int getNbTour() const;
-    /* mutateurs */
+    /********************************************************
+     *                      Mutateurs                       *
+     ********************************************************/
     void setCase(Pion *p, int x, int y);
     void setNbTour();
 };

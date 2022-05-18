@@ -11,6 +11,13 @@ C’est la guerre ! Les Bleus et les Rouges se battent.
 Les Bleus sont contrôlés par un joueur. Les Rouges sont aussi contrôlés par un joueur. Les Rouges sont rouges et les Bleus sont bleus. 
 Tous ces pions belliqueux vivent sur un plateau carré de 20×20 cases.
 
+
+## Observations
+
+Le Joueur 1 commence toujours la partie.
+le jeu est entierement conçu pour jouer sur le Terminal
+
+
 ## Utilisation
 
 --- 
