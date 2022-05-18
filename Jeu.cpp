@@ -304,6 +304,9 @@ void Jeu::selectPion(vector<Case *> &vecCases)
             /* Recupère saisi joueur */
             int choixG;
             choixG = choixMenu();
+            cin.clear();
+            /* Switch concernant le choix saisi */
+            switchActionsGuerrier(choixG, caseCourante->getX(), caseCourante->getY());
             break;
         case 'S': // ! SEIGNEUR (A FAIRE)
             /*  affiche les actions du pion sélectionné*/
@@ -318,6 +321,74 @@ void Jeu::selectPion(vector<Case *> &vecCases)
         }
     }
     return;
+}
+
+void Jeu::switchActionsGuerrier(int choix, int x, int y)
+{
+    Case *caseDest;
+    Case *caseCourante = m_plateau->getTabCase()[x][y];
+    switch (choix)
+    {
+    case 1: // ! Se déplacer sur le plateau
+        // /* Calcul des déplacements possible */
+        // vecCasesDeplacement2(x, y, vecCasesAdj, vecCasesMvts);
+
+        // /* Aperçu */
+        // this->getPlateau()->affiche();
+        // InterfaceJoueur();
+
+        // /* Affiche les cases de déplacements possibles du Paysan*/
+        // dynamic_cast<Paysan *>(caseCourante->getPion())->mvtPossible(vecCasesMvts);
+        // /* Choix de la case de destination */
+        // int choixP2;
+        // choixP2 = choixCase(vecCasesMvts);
+
+        // /* Sélection des cases de mvts */
+        // caseDest = selectionCase(choixP2, vecCasesMvts);
+
+        // /* Set du pion dans la nouvelle case */
+        // caseDest->setPion(caseCourante->getPion());
+        // caseDest->getPion()->setAction(false);
+
+        // cleanCasesMvt(vecCasesMvts);
+        // caseCourante->setPion(new Pion(caseCourante->getX(), caseCourante->getY()));
+        // /* Remplacer l'ancienne case par la nouvelle dans vecCasesJoueurs */
+        // if (m_tourJ == 0)
+        //     updateCasesJoueurs(vecCasesJoueur1, m_j1);
+        // else
+        //     updateCasesJoueurs(vecCasesJoueur2, m_j2);
+        return;
+    case 2: // ! attaquer sur le plateau
+        /* Calcul des cases d'attaques possibles */
+        vecCasesEnnemis1(x, y, vecCasesAdj, vecCasesMvts);
+
+        /* Aperçu */
+        this->getPlateau()->affiche();
+        InterfaceJoueur();
+
+        dynamic_cast<Guerrier *>(caseCourante->getPion())->attaquePossible(vecCasesMvts);
+
+        /* Choix de la case de destination */
+        int choixG2;
+        choixG2 = choixCase(vecCasesMvts);
+
+        /* Sélection des cases d'attaques */
+        caseDest = selectionCase(choixG2, vecCasesMvts);
+        dynamic_cast<Guerrier *>(caseCourante->getPion())->attaque(caseDest->getPion());
+        if (caseDest->getPion()->pionEstMort())
+        {
+            caseDest->setPion(new Pion(caseDest->getX(), caseDest->getY()));
+        }else {
+            cout << caseDest->getPion()->affichetype() << " a pris " << caseCourante->getPion()->getPow() << " dégats !";
+        }
+        
+        return;
+    case 3:
+        cout << "Retour " << endl;
+        break;
+    default:
+        break;
+    }
 }
 
 void Jeu::switchActionsPaysan(int choix, int x, int y)
@@ -485,6 +556,55 @@ Case *Jeu::selectionCase(int num, vector<Case *> vecCases)
  * TODO: Mieux commenter
  * Renvoi un Vecteur de cases adjacentes à la case sélectionnée
  */
+void Jeu::vecCasesAdjEnnemis(int x, int y, vector<Case *> &vec)
+{
+    int nb_col = m_plateau->getNbCol();
+    int posCase = x * nb_col + y; // 11
+    vec.clear();
+    if (posCase / nb_col != 0) // <- si pas 1ere ligne
+    {
+        vec.push_back(m_plateau->getTabCase()[x - 1][y]);
+        if (posCase % nb_col != 0) // <- si pas à la 1ere col
+            vec.push_back(m_plateau->getTabCase()[x][y - 1]);
+        if (posCase % nb_col != (nb_col - 1)) // < si pas a la der col
+            vec.push_back(m_plateau->getTabCase()[x][y + 1]);
+    }
+
+    if (posCase / nb_col != (nb_col - 1)) // <- Si pas dernière ligne
+    {
+        vec.push_back(m_plateau->getTabCase()[x + 1][y]); //
+        if (posCase % nb_col != 0)                        // <- si pas à la 1ere col
+            vec.push_back(m_plateau->getTabCase()[x][y - 1]);
+        if (posCase % nb_col != (nb_col - 1)) // < si pas a la der col
+            vec.push_back(m_plateau->getTabCase()[x][y + 1]);
+    }
+
+    /* if (posCase % nb_col != 0) // <-si  pas à la 1ere colonne
+    {
+        vec.push_back(m_plateau->getTabCase()[x][y - 1]);
+    }
+    if (posCase % nb_col != (nb_col - 1)) // <- si pas dernière colonne
+    {
+        vec.push_back(m_plateau->getTabCase()[x][y + 1]);
+    } */
+    /* Marquage des cases adjacentes ennemis */
+    marqueCasesAdjEnnemis(vec, x, y);
+}
+
+/* Marquage des cases ennemis */
+void Jeu::marqueCasesAdjEnnemis(vector<Case *> &vec, int x, int y)
+{
+    for (auto e : vec)
+    {
+        if (e->getPion()->getRef() != " " && e->getPion()->getRef() != " + " && m_plateau->getTabCase()[x][y]->getPion()->getM_Joueur() != e->getPion()->getM_Joueur())
+            vec.push_back(e);
+    }
+}
+
+/**
+ * TODO: Mieux commenter
+ * Renvoi un Vecteur de cases adjacentes à la case sélectionnée
+ */
 void Jeu::vecCasesAdjacentes(int x, int y, vector<Case *> &vec)
 {
     int nb_col = m_plateau->getNbCol();
@@ -520,13 +640,15 @@ void Jeu::vecCasesAdjacentes(int x, int y, vector<Case *> &vec)
     marqueCasesAdj(vec);
 }
 
-/* Marquage déplacements */
+/* Marquage déplacement */
 void Jeu::marqueCasesAdj(vector<Case *> &vec)
 {
     for (auto e : vec)
     {
         if (e->getPion()->getRef() == " " || e->getPion()->getRef() == " + ")
+        {
             e->setPion(new PionVide(e->getX(), e->getY()));
+        }
     }
 }
 
@@ -560,6 +682,26 @@ void Jeu::updateCasesJoueurs(vector<Case *> &vecCases, Joueur *joueur)
             if (m_plateau->getTabCase()[i][j]->getPion()->getM_Joueur() == joueur)
             {
                 vecCases.push_back(m_plateau->getTabCase()[i][j]);
+            }
+        }
+    }
+}
+
+/**
+ * TODO: A Commenter !!!
+ * attaque sur ennemis
+ */
+void Jeu::vecCasesEnnemis1(int x, int y, vector<Case *> &vecADJ, vector<Case *> &vecDPL)
+{
+    vecDPL.clear();
+    vecCasesAdjEnnemis(x, y, vecADJ);
+    for (int i = 0; i < m_plateau->getNbCol(); i++)
+    {
+        for (int j = 0; j < m_plateau->getNbCol(); j++)
+        {
+            if (m_plateau->getTabCase()[i][j]->getPion()->getRef() == " + ")
+            {
+                vecDPL.push_back(m_plateau->getTabCase()[i][j]);
             }
         }
     }

@@ -32,7 +32,6 @@ protected:
     vector<Case *> vecCasesJoueur1;
     vector<Case *> vecCasesJoueur2;
 
-
     vector<Case *> vecCasesAdj;
     vector<Case *> vecCasesMvts;
     vector<Case *> vecCasesActives;
@@ -59,14 +58,17 @@ public:
     void selectPion(vector<Case *> &vecCases);
 
     void vecCasesAdjacentes(int x, int y, vector<Case *> &vec);
+    void vecCasesAdjEnnemis(int x, int y, vector<Case *> &vec);
     void vecCasesDeplacement1(int x, int y, vector<Case *> &vecADJ, vector<Case *> &vecDPL);
-    void vecCasesDeplacement2(int x, int y,vector<Case*> &vecADJ, vector<Case*> &vecDPL);
+    void vecCasesDeplacement2(int x, int y, vector<Case *> &vecADJ, vector<Case *> &vecDPL);
+    void vecCasesEnnemis1(int x, int y, vector<Case *> &vecADJ, vector<Case *> &vecDPL);
     void updateCasesActives(vector<Case *> &vecCases);
-    void updateCasesJoueurs(vector<Case *> &vecCases, Joueur * j);
+    void updateCasesJoueurs(vector<Case *> &vecCases, Joueur *j);
 
     /* Actions Pions */
     void switchActionsPaysan(int choix, int x, int y);
     void switchActionsChateau(int choix, int x, int y);
+    void switchActionsGuerrier(int choix, int x, int y);
 
     void estGameOver();
     /**
@@ -82,13 +84,13 @@ public:
      * pareil pour Seigneur qui pop
      * TODO: Guerrier( Déplacement *3 + Attaque )
      * VecADJ = vecDPL 2
-     * 
+     *
      * TODO: Destruction des Pions lors Attaque
      * subit des dégats
-     * 
+     *
      * TODO: Etat des TOurs (résumés)
-     *  Utiliser MAP 
-     * 
+     *  Utiliser MAP
+     *
      */
 
     /* accesseurs */
@@ -96,9 +98,10 @@ public:
     Joueur *getJoueur1() const;
     Joueur *getJoueur2() const;
     Case *selectionPion(int num, vector<Case *> vecCases) const;
-    Case * selectionCase(int num, vector<Case *> vecCases);
+    Case *selectionCase(int num, vector<Case *> vecCases);
     void transformerEnChateau(int x, int y);
     void marqueCasesAdj(vector<Case *> &vecCases);
+    void marqueCasesAdjEnnemis(vector<Case *> &vec, int x, int y);
     void cleanCasesMvt(vector<Case *> &vec);
     int getNbTour() const;
     /* mutateurs */

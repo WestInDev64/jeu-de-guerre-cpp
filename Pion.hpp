@@ -50,6 +50,31 @@ public:
         delete this;
     }
 
+    bool pionEstMort()
+    {
+        if (this->m_pdv < 1)
+        {
+            cout << "*Slurp* pion détruit !" << endl;
+            return true;
+        }
+        return false;
+    }
+
+    void attaquePossible(vector<Case *> &vecCases)
+    {
+        cout << "Attaques possibles: " << vecCases.size() << " positions: " << endl;
+        for (int i = 0; i < (int)vecCases.size(); i++)
+        {
+            cout << "   "
+                 << (i + 1)
+                 << " - Case: "
+                 << "(" << enumToChar(vecCases[i]->getX()) << "," << vecCases[i]->getY() << ")" << endl;
+        }
+        cout << "   "
+             << ((int)vecCases.size() + 1)
+             << " - Retour au menu précédent" << endl;
+    }
+
     // virtual std::string affichePion() = 0;
 
     /********************************************************
@@ -72,6 +97,8 @@ public:
     int getX() const { return m_posx; }
 
     int getY() const { return m_posy; }
+
+    int getPow() const { return m_pow; }
 
     /********************************************************
      *                      Mutateurs                       *
