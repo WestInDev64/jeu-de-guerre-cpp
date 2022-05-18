@@ -76,43 +76,54 @@ void Jeu::initPlateau(int x, int y)
     vecCasesJoueur1.push_back(m_plateau->getTabCase()[1][2]);
     m_j1->setNbChateau();
 
-    Pion *chatj2 = new Chateau(m_j2, 8, 8);
-    Pion *payj2 = new Paysan(m_j2, 8, 7);
-    setCase(chatj2, 8, 8);
-    setCase(payj2, 8, 7);
-    vecCasesJoueur2.push_back(m_plateau->getTabCase()[8][8]);
-    vecCasesJoueur2.push_back(m_plateau->getTabCase()[8][7]);
+    Pion *chatj2 = new Chateau(m_j2, x - 2, y - 2);
+    Pion *payj2 = new Paysan(m_j2, x - 2, y - 3);
+    setCase(chatj2, x - 2, y - 2);
+    setCase(payj2, x - 2, y - 3);
+    vecCasesJoueur2.push_back(m_plateau->getTabCase()[x - 2][y - 2]);
+    vecCasesJoueur2.push_back(m_plateau->getTabCase()[x - 2][y - 3]);
     m_j2->setNbChateau();
 }
 
 void Jeu::Start()
 {
-    etatTourPhase2 = 1;
+    etatTourPhase1 = 1; // sans taxe chateaux
+    etatTourPhase2 = 1; // avec taxe chateaux
     do
     {
         setNbTour();
         switch (m_tourJ)
         {
         case 0:
-            //! 1 - Taxe chateaux
+            //  1 - Taxe chateaux
             if (!etatTourPhase1)
                 m_j1->taxeDesChateaux();
-            //! Affichage Plateau + Interface
+
+            // Affichage Plateau + Interface
             this->getPlateau()->affiche();
             InterfaceJoueur();
 
-            //! Sélectionne Menu Tour
+            // Sélection Menu Joueur
             selectionMenu(vecCasesJoueur1);
+
+            // Update actions des pions
             for (auto e : vecCasesJoueur1)
                 e->getPion()->setAction(true);
             m_tourJ = 1;
             break;
         case 1:
+            //  1 - Taxe chateaux
             if (!etatTourPhase1)
                 m_j2->taxeDesChateaux();
+
+            // Affichage Plateau + Interface
             this->getPlateau()->affiche();
             InterfaceJoueur();
+
+            // Sélection Menu Joueur
             selectionMenu(vecCasesJoueur2);
+
+            // Update actions des pions
             for (auto e : vecCasesJoueur2)
                 e->getPion()->setAction(true);
             m_tourJ = 0;
@@ -123,12 +134,12 @@ void Jeu::Start()
             break;
         }
     } while (etatTourPhase2);
+
+    cout << "FIN DE PARTIE" << endl;
 }
 
 /**
  * Interface des 2 joueurs à chaque display
- * Juste la quantite d'or et de chateau
- *
  * non le joueur voit en fonction de lui ses actions
  */
 void Jeu::InterfaceJoueur()
@@ -175,6 +186,7 @@ void Jeu::InterfaceJoueur()
  */
 void Jeu::affichePion(vector<Case *> &vecCases)
 {
+    cout << endl;
     cout << "Vous possédez " << vecCases.size() << " pions:" << endl;
     for (int i = 0; i < (int)vecCases.size(); i++)
     {
@@ -195,6 +207,7 @@ void Jeu::affichePion(vector<Case *> &vecCases)
 
 void Jeu::afficheMenuTour()
 {
+    cout << endl;
     cout << "# Menu Principal :" << endl;
     cout << "   1 - Sélectionner un pion" << endl;
     cout << "   2 - Finir son tour" << endl;
@@ -209,27 +222,18 @@ void Jeu::selectionMenu(vector<Case *> &vecCases)
     int choix = 0;
     do
     {
-        cout << endl;
         afficheMenuTour();
-        cout << endl;
         cout << "Sélectionner un menu: ";
         choix = choixMenu();
-        /* CLEAR BUFFER après mauvaises saisies  */
-        cin.clear();
-        // cin.ignore(numeric_limits<streamsize>::max(), '\n');
         switch (choix)
         {
-        case 1:
-            /**
-             * TODO: Faire un systeme d'affichage par pion ayant action true
-             */
-            selectPion(vecCases);
+        case 1: // ! Sélectionner un Pion
+            updateCasesActives(vecCases);
+            /* Sélection des pions */
+            selectPion(vecCasesActives);
             break;
         case 2:
-            /**
-             * TODO: A faire..
-             */
-            cout << "Finir son tour" << endl;
+            cout << "Votre tour est terminé " << endl;
             break;
         case 3:
             cout << "Pause";
@@ -246,59 +250,68 @@ void Jeu::selectionMenu(vector<Case *> &vecCases)
         default:
             break;
         }
-    } while ((choix != 4) && (choix != 2));
+    } while ((choix != 6) && (choix != 2));
 }
 
 void Jeu::selectPion(vector<Case *> &vecCases)
 {
-    int choix = 0;
+    int choix;
 
     affichePion(vecCases);
-    choix = choixMenu() - 1;
-    cin.clear();
+    choix = choixCase(vecCases);
 
-    /* Retour menu précédent */
+    /* Si le choix n'est pas "Retour " */
     if (choix != (int)vecCases.size())
     {
-        /**
-         * 1 - Renvoi la case sélectionné
-         * 2 - Affiche les actions
-         * 3 - select Actions
-         * 4 -
-         *
-         * 2 - Retourne un vecteur de cases adjacentes
-         * 3 - Affiche les cases adjacentes dans le tableau
-         * 4 - Affiche le tableau
-         */
+        /* Case sélectionnée */
         Case *caseCourante = selectionPion(choix, vecCases);
 
+        /* switch en fonction de la référence de pion */
         switch (caseCourante->getPion()->getRef()[0])
         {
-        case 'C':
+        case 'C': // ! CHATEAU (FAIT)
+            /*  affiche les actions du pion sélectionné*/
             caseCourante->getPion()->afficheActions();
+            cout << "Selectionner une action: ";
             int choixC;
             choixC = choixMenu();
-            cin.clear();
             /* Switch concernant le choix saisi */
-            switchActionsChateau(choixC, caseCourante->getX(), caseCourante->getY(), vecCases);
+            switchActionsChateau(choixC, caseCourante->getX(), caseCourante->getY());
+
+            /* Aperçu */
             this->getPlateau()->affiche();
             InterfaceJoueur();
             break;
-        case 'P':
+        case 'P': // ! PAYSAN (FAIT)
             /* Affiche menu Action du Paysan */
             caseCourante->getPion()->afficheActions();
-            /* Recupere saisi joueur */
+            /* Recupère saisi joueur */
+            cout << "Selectionner une action: ";
             int choixP;
             choixP = choixMenu();
             cin.clear();
             /* Switch concernant le choix saisi */
-            switchActionsPaysan(choixP, caseCourante->getX(), caseCourante->getY(), vecCases);
+            switchActionsPaysan(choixP, caseCourante->getX(), caseCourante->getY());
+
+            /* Aperçu */
             this->getPlateau()->affiche();
             InterfaceJoueur();
             break;
-        case 'G':
+        case 'G': // ! GUERRIER (A FAIRE)
+            /*  affiche les actions du pion sélectionné*/
+            caseCourante->getPion()->afficheActions();
+            cout << "Selectionner une action: ";
+            /* Recupère saisi joueur */
+            int choixG;
+            choixG = choixMenu();
             break;
-        case 'S':
+        case 'S': // ! SEIGNEUR (A FAIRE)
+            /*  affiche les actions du pion sélectionné*/
+            caseCourante->getPion()->afficheActions();
+            cout << "Selectionner une action: ";
+            /* Recupère saisi joueur */
+            int choixS;
+            choixS = choixMenu();
             break;
         default:
             break;
@@ -307,106 +320,140 @@ void Jeu::selectPion(vector<Case *> &vecCases)
     return;
 }
 
-void Jeu::switchActionsPaysan(int choix, int x, int y, vector<Case *> &vecCases)
+void Jeu::switchActionsPaysan(int choix, int x, int y)
 {
     Case *caseDest;
     Case *caseCourante = m_plateau->getTabCase()[x][y];
     switch (choix)
     {
-    case 1:
+    case 1: // ! Se déplacer sur le plateau
+        /* Calcul des déplacements possible */
         vecCasesDeplacement2(x, y, vecCasesAdj, vecCasesMvts);
+
+        /* Aperçu */
+        this->getPlateau()->affiche();
+        InterfaceJoueur();
+
         /* Affiche les cases de déplacements possibles du Paysan*/
         dynamic_cast<Paysan *>(caseCourante->getPion())->mvtPossible(vecCasesMvts);
-        this->getPlateau()->affiche();
-        cout << "Selectionner la Case de destination: " << endl;
+        /* Choix de la case de destination */
         int choixP2;
-        choixP2 = (choixMenu() - 1);
-        cin.clear();
+        choixP2 = choixCase(vecCasesMvts);
+
         /* Sélection des cases de mvts */
         caseDest = selectionCase(choixP2, vecCasesMvts);
+
+        /* Set du pion dans la nouvelle case */
         caseDest->setPion(caseCourante->getPion());
         caseDest->getPion()->setAction(false);
 
-        /* Remplacer l'ancienne case par la nouvelle dans vecCasesJoueurs */
-        vecCases.erase(vecCases.begin() + choix);
-        vecCases.push_back(caseDest);
         cleanCasesMvt(vecCasesMvts);
         caseCourante->setPion(new Pion(caseCourante->getX(), caseCourante->getY()));
+        /* Remplacer l'ancienne case par la nouvelle dans vecCasesJoueurs */
+        if (m_tourJ == 0)
+            updateCasesJoueurs(vecCasesJoueur1, m_j1);
+        else
+            updateCasesJoueurs(vecCasesJoueur2, m_j2);
         return;
-    case 2:
+    case 2: // ! Amasser des Ressources
+        /* Produire de l'or */
         dynamic_cast<Paysan *>(caseCourante->getPion())->produireOrS();
         caseCourante->getPion()->setAction(false);
+        cout << "Votre paysan a récolté : " << caseCourante->getPion()->getProd() << "pièces d'Or" << endl;
         return;
+    case 3:
+        cout << "Retour " << endl;
+        break;
     default:
         break;
     }
 }
 
-void Jeu::switchActionsChateau(int choix, int x, int y, vector<Case *> &vecCases)
+void Jeu::switchActionsChateau(int choix, int x, int y)
 {
     Case *caseDest;
     Case *caseCourante = m_plateau->getTabCase()[x][y];
     switch (choix)
     {
+    /* Choix recrutement */
     case 1:
-        dynamic_cast<Chateau *>(caseCourante->getPion())->afficheRecruter();
-        cout << "Selectionner le recrutement: " << endl;
-        int choixC2;
-        choixC2 = (choixMenu() - 1);
-        cin.clear();
-
+        /* Calcul des emplacements possible */
         vecCasesDeplacement1(x, y, vecCasesAdj, vecCasesMvts);
-        dynamic_cast<Chateau *>(caseCourante->getPion())->empPossible(vecCasesMvts);
-        /* Affiche les cases de déplacements possibles du Paysan*/
-        this->getPlateau()->affiche();
-        cout << "Selectionner la Case de destination: " << endl;
-        int choixC3;
-        choixC3 = (choixMenu() - 1);
-        cin.clear();
 
-        /* Sélection des cases de mvts */
+        /* Aperçu */
+        this->getPlateau()->affiche();
+        InterfaceJoueur();
+
+        /* Affiche la liste des empl disponibles */
+        dynamic_cast<Chateau *>(caseCourante->getPion())->afficheEmplPossible(vecCasesMvts);
+
+        /* Choix de l'emplacement de recrutement */
+        int choixC3;
+        choixC3 = choixCase(vecCasesMvts);
+
+        /* Sélection de la case et la retourne */
         caseDest = selectionCase(choixC3, vecCasesMvts);
+
+        /* Affiche la liste des pions recrutables */
+        dynamic_cast<Chateau *>(caseCourante->getPion())->afficheRecruter();
+        /* Sélection du type de pion */
+        cout << "Selectionner le recrutement: ";
+        int choixC2;
+        choixC2 = choixMenu();
+
+        /* Switch de recrutement Pion (ajouter si d'autres joueurs) */
         switch (choixC2)
         {
-        case 0:
-            /* Recrute un Seigneur */
+        case 1: // ! Recrute un Seigneur
             if (caseCourante->getPion()->peutRecruter(10))
             {
                 caseDest->setPion(new Seigneur(caseCourante->getPion()->getM_Joueur(), caseDest->getX(), caseDest->getY()));
                 caseDest->getPion()->setAction(false);
                 caseCourante->getPion()->setAction(false);
                 caseCourante->getPion()->getM_Joueur()->enleverOr(caseDest->getPion()->getCout());
-                vecCases.push_back(caseDest);
+                if (m_tourJ == 0)
+                    updateCasesJoueurs(vecCasesJoueur1, m_j1);
+                else
+                    updateCasesJoueurs(vecCasesJoueur2, m_j2);
             }
             break;
-        case 1:
+        case 2: // ! Recrute un Guerrier
             if (caseCourante->getPion()->peutRecruter(10))
             {
                 caseDest->setPion(new Guerrier(caseCourante->getPion()->getM_Joueur(), caseDest->getX(), caseDest->getY()));
                 caseDest->getPion()->setAction(false);
                 caseCourante->getPion()->setAction(false);
                 caseCourante->getPion()->getM_Joueur()->enleverOr(caseDest->getPion()->getCout());
-                vecCases.push_back(caseDest);
+                if (m_tourJ == 0)
+                    updateCasesJoueurs(vecCasesJoueur1, m_j1);
+                else
+                    updateCasesJoueurs(vecCasesJoueur2, m_j2);
             }
             break;
-        case 2:
-            if (caseCourante->getPion()->peutRecruter(30))
+        case 3: // ! Recrute un Paysan
+            if (caseCourante->getPion()->peutRecruter(20))
             {
                 caseDest->setPion(new Paysan(caseCourante->getPion()->getM_Joueur(), caseDest->getX(), caseDest->getY()));
                 caseDest->getPion()->setAction(false);
                 caseCourante->getPion()->setAction(false);
                 caseCourante->getPion()->getM_Joueur()->enleverOr(caseDest->getPion()->getCout());
-                vecCases.push_back(caseDest);
+                if (m_tourJ == 0)
+                    updateCasesJoueurs(vecCasesJoueur1, m_j1);
+                else
+                    updateCasesJoueurs(vecCasesJoueur2, m_j2);
             }
             break;
+        case 4: // ! Retour annule le recrutement
+            cout << "Retour (Recrutement annulé) " << endl;
+            break;
         default:
-            cout << "Erreur saisie !" << endl;
+            cout << "Erreur saisie (Recrutement annulé) !" << endl;
             break;
         }
-        /* Remplacer l'ancienne case par la nouvelle dans vecCasesJoueurs */
+        /* Nettoyage du marquage  */
         cleanCasesMvt(vecCasesMvts);
-
         return;
+    /* Choix ne rien faire */
     case 2:
         cout << "Ne fait rien !" << endl;
         caseCourante->getPion()->setAction(false);
@@ -428,7 +475,9 @@ Case *Jeu::selectionPion(int num, vector<Case *> vecCases) const
 Case *Jeu::selectionCase(int num, vector<Case *> vecCases)
 {
     if (num > (int)vecCases.size() && (int)vecCases.size() == 0)
+    {
         exit(1);
+    }
     return vecCases[num];
 }
 
@@ -441,7 +490,6 @@ void Jeu::vecCasesAdjacentes(int x, int y, vector<Case *> &vec)
     int nb_col = m_plateau->getNbCol();
     int posCase = x * nb_col + y; // 11
     vec.clear();
-    cout << "func in: " << (int)vec.size() << endl;
     if (posCase / nb_col != 0) // <- si pas 1ere ligne
     {
         vec.push_back(m_plateau->getTabCase()[x - 1][y]);
@@ -468,7 +516,6 @@ void Jeu::vecCasesAdjacentes(int x, int y, vector<Case *> &vec)
     {
         vec.push_back(m_plateau->getTabCase()[x][y + 1]);
     } */
-    cout << "func out: " << (int)vec.size() << endl;
     /* Marquage des cases adjacentes vide */
     marqueCasesAdj(vec);
 }
@@ -493,6 +540,31 @@ void Jeu::cleanCasesMvt(vector<Case *> &vec)
     }
 }
 
+/* Actualise les cases de pions disponibles pour Actions */
+void Jeu::updateCasesActives(vector<Case *> &vecCases)
+{
+    vecCasesActives.clear();
+    for (auto e : vecCases)
+        if (e->getPion()->getAction())
+            vecCasesActives.push_back(e);
+}
+
+/* Actualise les cases de pions disponibles pour Actions */
+void Jeu::updateCasesJoueurs(vector<Case *> &vecCases, Joueur *joueur)
+{
+    vecCases.clear();
+    for (int i = 0; i < m_plateau->getNbCol(); i++)
+    {
+        for (int j = 0; j < m_plateau->getNbCol(); j++)
+        {
+            if (m_plateau->getTabCase()[i][j]->getPion()->getM_Joueur() == joueur)
+            {
+                vecCases.push_back(m_plateau->getTabCase()[i][j]);
+            }
+        }
+    }
+}
+
 /**
  * TODO: A Commenter !!!
  * Déplacement Paysan
@@ -507,7 +579,6 @@ void Jeu::vecCasesDeplacement1(int x, int y, vector<Case *> &vecADJ, vector<Case
         {
             if (m_plateau->getTabCase()[i][j]->getPion()->getRef() == " + ")
             {
-                cout << "PUSH BACK" << endl;
                 vecDPL.push_back(m_plateau->getTabCase()[i][j]);
             }
         }
@@ -554,7 +625,6 @@ void Jeu::vecCasesDeplacement2(int x, int y, vector<Case *> &vecADJ, vector<Case
     }
 }
 
-
 void Jeu::estGameOver()
 {
     if (m_j1->getNbChateau() < 1)
@@ -569,7 +639,6 @@ void Jeu::estGameOver()
         }
     }
 }
-
 
 /* Transforme un Seigneur en Chateau */
 void Jeu::transformerEnChateau(int x, int y)

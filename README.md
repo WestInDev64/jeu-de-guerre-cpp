@@ -31,7 +31,7 @@ Tous ces pions belliqueux vivent sur un plateau carré de 20×20 cases.
 
 - [ ] Un seigneur peut se déplacer et attaquer ou consommer de l’or pour se construire un château et dans ce cas rentre dedans pour ne plus en sortir (autrement dit un seigneur peut se transformer en château).
 
--[ ] Un guerrier peut se déplacer et attaquer.
+- [ ] Un guerrier peut se déplacer et attaquer.
 
 — [x] Un paysan peut se déplacer ou produire des ressources
 

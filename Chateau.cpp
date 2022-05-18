@@ -40,6 +40,7 @@ string Chateau::affichetype()
 
 void Chateau::afficheActions()
 {
+    cout << endl;
     cout << "SELECT: [ " << this->affichetype()
          << " (" << enumToChar(this->getX())
          << ", " << this->getY() << ") ]" << endl;
@@ -60,7 +61,7 @@ void Chateau::afficheRecruter()
     cout << "   4 - Retour" << endl;
 }
 
-void Chateau::empPossible(vector<Case *> &vecCases)
+void Chateau::afficheEmplPossible(vector<Case *> &vecCases)
 {
     cout << "Emplacements possibles: " << vecCases.size() << " positions: " << endl;
     for (int i = 0; i < (int)vecCases.size(); i++)

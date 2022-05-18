@@ -55,6 +55,8 @@ public:
     /********************************************************
      *                      Accesseurs                      *
      ********************************************************/
+    Joueur *getM_Joueur() { return m_joueur; }
+
     string getRef() const { return m_ref; }
 
     int getPdv() { return m_pdv; }
@@ -63,9 +65,17 @@ public:
 
     int getPdm() { return m_pdm; }
 
-    Joueur *getM_Joueur() { return m_joueur; }
-
     int getCout() const { return m_cout; }
+
+    int getProd() const { return m_prod; }
+
+    int getX() const { return m_posx; }
+
+    int getY() const { return m_posy; }
+
+    /********************************************************
+     *                      Mutateurs                       *
+     ********************************************************/
 
     void setPdv(int pdv)
     {
@@ -111,16 +121,6 @@ public:
     void reinitAction()
     {
         m_action = false;
-    }
-
-    int getX() const
-    {
-        return m_posx;
-    }
-
-    int getY() const
-    {
-        return m_posy;
     }
 };
 

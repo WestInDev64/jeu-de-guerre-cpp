@@ -22,7 +22,7 @@ public:
      * Exemple : Le paramètre est P le Chateau recrute un Paysan; 
      * */
     void construirePion(int choix, int x, int y, Pion * p);
-    void empPossible(vector<Case *> &vecCases);
+    void afficheEmplPossible(vector<Case *> &vecCases);
 
     /* Méthodes Affichages */
     string affichetype();

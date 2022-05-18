@@ -1,5 +1,6 @@
 #include "functions.hpp"
 #include <iostream>
+#include <limits>
 
 using namespace std;
 
@@ -7,6 +8,8 @@ int choixMenu()
 {
     int choix;
     cin >> choix;
+    cin.clear();
+    cin.ignore(numeric_limits<streamsize>::max(), '\n');
     return choix;
 }
 
@@ -72,4 +75,23 @@ char enumToChar(int abc)
     default:
         return '.';
     }
+}
+
+int choixCase(vector<Case *> vecCases)
+{
+    if (vecCases.size() == 0)
+    {
+        cout << "Erreur aucune cases disponible !" << endl;
+        cout << "Vos pions n'ont plus d'actions à réaliser" << endl;
+    }
+    int choix;
+    do
+    {
+        /* Sélection de l'emplacement */
+        cout << "Selectionner votre case: ";
+        choix = (choixMenu() - 1);
+        if (choix < 0 || choix > (int)vecCases.size())
+            cout << "Erreur saisie, sélectionner une case dans la liste!" << endl;
+    } while (choix < 0 || choix > (int)vecCases.size());
+    return choix;
 }

@@ -1,6 +1,8 @@
 #ifndef FUNCTIONS_HPP
 #define FUNCTIONS_HPP
 
+#include <vector>
+#include "Case.hpp"
 
 enum Alphabet
 {
@@ -10,5 +12,8 @@ enum Alphabet
 
 char enumToChar(int abc);
 int choixMenu();
+
+int choixCase(vector<Case *> vecCases);
+
 
 #endif //FUNCTIONS_HPP

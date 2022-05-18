@@ -28,6 +28,7 @@ public:
     void enleverOr(int o);
     void setNbChateau();
     void taxeDesChateaux();
+    
 };
 
 
