@@ -11,6 +11,7 @@
 #include "functions.hpp"
 #include "Paysan.hpp"
 #include "Guerrier.hpp"
+#include "Seigneur.hpp"
 
 using namespace std;
 
