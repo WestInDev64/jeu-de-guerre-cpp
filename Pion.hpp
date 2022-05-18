@@ -23,6 +23,7 @@ protected:
 
     /* 1 action par Pion (sauf pour le Guerrier qui peut se déplacer puis attaquer) */
     bool m_action = true;
+    bool m_deplacement = true;
 
     /* positions */
     int m_posx;
@@ -77,6 +78,7 @@ public:
     int getPdv() { return m_pdv; }
 
     bool getAction() { return m_action; }
+    bool getDeplacer() { return m_deplacement; }
 
     int getPdm() { return m_pdm; }
 
@@ -89,6 +91,7 @@ public:
     int getY() const { return m_posy; }
 
     int getPow() const { return m_pow; }
+
 
     /********************************************************
      *                      Mutateurs                       *
@@ -128,6 +131,10 @@ public:
     void setAction(bool a)
     {
         m_action = a;
+    }
+    void setDeplacer(bool a)
+    {
+        m_deplacement = a;
     }
 
     void setPdm(int m)

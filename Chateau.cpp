@@ -63,6 +63,7 @@ void Chateau::afficheRecruter()
 
 void Chateau::afficheEmplPossible(vector<Case *> &vecCases)
 {
+    cout << endl;
     cout << "Emplacements possibles: " << vecCases.size() << " positions: " << endl;
     for (int i = 0; i < (int)vecCases.size(); i++)
     {

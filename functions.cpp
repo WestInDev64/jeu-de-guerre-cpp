@@ -83,6 +83,7 @@ int choixCase(vector<Case *> vecCases)
     {
         cout << "Erreur aucune cases disponible !" << endl;
         cout << "Vos pions n'ont plus d'actions à réaliser" << endl;
+        return -1;
     }
     int choix;
     do

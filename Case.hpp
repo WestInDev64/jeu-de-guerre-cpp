@@ -16,6 +16,7 @@ private:
 public:
     Case();
     Case(int x, int y);
+    Case(int x, int y, Joueur *j);
     void setPion( Pion * p);
 
     /* Accesseurs */

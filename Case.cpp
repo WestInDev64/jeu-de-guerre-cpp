@@ -13,6 +13,13 @@ Case::Case(int x, int y)
     posy = y;
 }
 
+Case::Case(int x, int y, Joueur *j)
+{
+    m_pion = new Pion(j,x,y);
+    posx = x;
+    posy = y;
+}
+
 /********************************************************
  *                      Accesseurs                      *
  ********************************************************/ 

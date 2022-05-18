@@ -65,6 +65,7 @@ public:
     void vecCasesDeplacement1(int x, int y, vector<Case *> &vecADJ, vector<Case *> &vecDPL);
     void vecCasesDeplacement2(int x, int y, vector<Case *> &vecADJ, vector<Case *> &vecDPL);
     void vecCasesDeplacement3(int x, int y, vector<Case *> &vecADJ, vector<Case *> &vecDPL);
+    void vecCasesDeplacement5(int x, int y, vector<Case *> &vecADJ, vector<Case *> &vecDPL);
     void updateCasesActives(vector<Case *> &vecCases);
     void updateCasesJoueurs(vector<Case *> &vecCases, Joueur *j);
 
@@ -72,6 +73,7 @@ public:
     void switchActionsPaysan(int choix, int x, int y);
     void switchActionsChateau(int choix, int x, int y);
     void switchActionsGuerrier(int choix, int x, int y);
+    void switchActionsSeigneur(int choix, int x, int y);
 
     void estGameOver();
     /**
